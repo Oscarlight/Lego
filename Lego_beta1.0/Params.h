@@ -9,42 +9,42 @@
 #define PARAMS_H_
 
 // included dependencies
-#include "MathFunct.h";
+#include "MathFunct.h"
 
 class Params : public MathFunct {
 
 public:
 	// Natural unit:
-	const double nat_T = 300; // default Temp.
-	const double nat_m0 = 9.1e-31; // kg
-	const double nat_Planck = 6.62606957e-34; // J*s
-	const double nat_Planckba = Planck/(2*Pi);
-	const double nat_Planck_ev = 4.135667517e-15; // eV*s
-	const double nat_ChargeQ = 1.6e-19; // C
-	const double nat_E0 = 8.854187817e-12; // F/m
-	const double nat_kb = 1.3806488e-23; // m2*kg*s-2*K-1
+	double nat_T = 300; // default Temp.
+	double nat_m0 = 9.1e-31; // kg
+	double nat_Planck = 6.62606957e-34; // J*s
+	double nat_Planckba = Planck/(2*Pi);
+	double nat_Planck_ev = 4.135667517e-15; // eV*s
+	double nat_ChargeQ = 1.6e-19; // C
+	double nat_E0 = 8.854187817e-12; // F/m
+	double nat_kb = 1.3806488e-23; // m2*kg*s-2*K-1
 
 protected:
 	// Lego unit:
-	const double Pi = 3.1415926;
-	const double kb;
-	const double T;
-	const double Vth;
-	const double m0;
-	const double Planck;
-	const double Planckba;
-	const double Planck_ev;
-	const double Planckba_ev;
-	const double ChargeQ;
-	const double E0;
+	double Pi = 3.1415926;
+	double kb;
+	double T;
+	double Vth;
+	double m0;
+	double Planck;
+	double Planckba;
+	double Planck_ev;
+	double Planckba_ev;
+	double ChargeQ;
+	double E0;
 
-protected:
+public:
 	// System const:
-	const double LARGE = 1E100; // a large number 1E100
-	const int    Dirichlet=1;
-	const int    Neumann=2;
-	const int    Semiconductor=3;
-	const int    Dielectric=4;
+	double LARGE = 1E100; // a large number 1E100
+	int    Dirichlet=1;
+	int    Neumann=2;
+	int    Semiconductor=3;
+	int    Dielectric=4;
 
 
 public:

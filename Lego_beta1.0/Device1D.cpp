@@ -79,6 +79,8 @@ void Device1D::startWith(Material m, double _t, int _n, int _bottomBoundaryType)
 	typeArray.insert(typeArray.end(), n + 1, m.type);
 	( m.type == Semiconductor ) ? phinInitArray.insert(phinInitArray.end(), n + 1, m.bandGap/2) : phinInitArray.insert(phinInitArray.end(), n + 1, 0);
 	( m.type == Semiconductor ) ? phipInitArray.insert(phipInitArray.end(), n + 1, m.bandGap/2) : phipInitArray.insert(phipInitArray.end(), n + 1, 0);
+
+	std::cout << "Material " << m.name << " is added as first layer with # of point = " << n + 1 << std::endl;
 }
 
 void Device1D::add(Material m, double _t, int _n) {
@@ -86,11 +88,12 @@ void Device1D::add(Material m, double _t, int _n) {
 	double spacingY;
 
 	// 3D or 2D
+	// m.dimension is prohibited, if dimension is protected.
 	if (m.dimension == 3) {
 		t = _t * cmLN(1E-7);
 		n = _n;
 		spacingY = t/n;
-	} else if ( m.dimension == 2) {
+	} else if (m.dimension == 2) {
 		t = m.t2D;
 		n = 1;
 		spacingY = t;
@@ -107,6 +110,7 @@ void Device1D::add(Material m, double _t, int _n) {
 	( m.type == Semiconductor ) ? phinInitArray.insert(phinInitArray.end(), n, m.bandGap/2) : phinInitArray.insert(phinInitArray.end(), n, 0);
 	( m.type == Semiconductor ) ? phipInitArray.insert(phipInitArray.end(), n, m.bandGap/2) : phipInitArray.insert(phipInitArray.end(), n, 0);
 
+	std::cout << "Material " << m.name << " is added with # of point = " << n << std::endl;
 }
 
 void Device1D::endWith(Material m, double _t, int _n, int _topBoundaryType) {
@@ -118,22 +122,32 @@ void Device1D::endWith(Material m, double _t, int _n, int _topBoundaryType) {
 	spacingArray.push_back(spacingArray.back());
 	// total # of read points
 	sumPoint = dieleArray.size() - 1;
+	std::cout << "Device1D is constructed with total points = " << sumPoint << std::endl;
+}
+
+mat Device1D::vec2Mat(std::vector<double> vec) {
+	mat t = zeros(vec.size());
+	for (int i = 0; i < vec.size(); i++) {
+		t(i) = vec[i];  // ALWAYS use () for mat type
+	}
+	return ( t );
 }
 
 void Device1D::matrixDiff() {
-	sp_mat C = zeros(sumPoint, sumPoint);
-
+	sp_mat C(sumPoint, sumPoint);
+	mat dieleArrayM = vec2Mat(dieleArray);
+	mat spacingArrayM = vec2Mat(spacingArray);
 	/**
 	 * Diff Matrix considering B.C. using Penelty Method
 	 */
 	for ( int i=1; i<sumPoint+1; i++) {
 		for ( int j=1; j<sumPoint+1; j++) {
 			if (i==j) {
-				C(i-1,j-1)= - 2*dieleArray(i)/( spacingArray(i)*( spacingArray(i)+spacingArray(i-1) ) ) - 2*dieleArray(i-1)/( spacingArray(i)*( spacingArray(i)+spacingArray(i-1) ) );
+				C(i-1,j-1)= - 2*dieleArrayM(i)/( spacingArrayM(i)*( spacingArrayM(i)+spacingArrayM(i-1) ) ) - 2*dieleArrayM(i-1)/( spacingArrayM(i)*( spacingArrayM(i)+spacingArrayM(i-1) ) );
 			} else if (j==i-1) {
-				C(i-1,j-1)=2*dieleArray(i-1)/( spacingArray(i)*( spacingArray(i)+spacingArray(i-1) ) );
+				C(i-1,j-1)=2*dieleArrayM(i-1)/( spacingArrayM(i)*( spacingArrayM(i)+spacingArrayM(i-1) ) );
 			} else if (j==i+1) {
-				C(i-1,j-1)=2*dieleArray(i)/( spacingArray(i)*( spacingArray(i)+spacingArray(i-1) ) );
+				C(i-1,j-1)=2*dieleArrayM(i)/( spacingArrayM(i)*( spacingArrayM(i)+spacingArrayM(i-1) ) );
 			};
 		};
 	};
@@ -157,13 +171,7 @@ void Device1D::matrixDiff() {
 }
 
 
-mat Device1D::vec2Mat(std::vector<double> vec) {
-	mat t = zeros(vec.size());
-	for (int i = 0; i < vec.size(); i++) {
-		t(i) = vec[i];  // ALWAYS use () for mat type
-	}
-	return ( t );
-}
+
 
 mat Device1D::getEAArray() {
 	return ( vec2Mat(electronAffinityArray) );
@@ -183,12 +191,18 @@ mat Device1D::getPpIArray() {
 int Device1D::getSumPoint() {
 	return ( sumPoint );
 }
+int Device1D::getBBT() {
+	return ( bottomBoundaryType);
+}
+int Device1D::getTBT() {
+	return ( topBoundaryType);
+}
 sp_mat Device1D::getMatrixC() {
 	return ( matrixC );
 }
 
 mat Device1D::eDensityArrayFunct(mat phin) {
-	if ( phin.elem != sumPoint)
+	if ( phin.n_elem != sumPoint)
 		std::cerr << "Error: input wrong phin size!" << std::endl;
     mat density=zeros(sumPoint);
 
@@ -206,7 +220,7 @@ mat Device1D::eDensityArrayFunct(mat phin) {
 }
 
 mat Device1D::hDensityArrayFunct(mat phip) {
-	if ( phip.elem != sumPoint)
+	if ( phip.n_elem != sumPoint)
 		std::cerr << "Error: input wrong phip size!" << std::endl;
     mat density=zeros(sumPoint);
 
@@ -224,16 +238,14 @@ mat Device1D::hDensityArrayFunct(mat phip) {
 }
 
 mat Device1D::chargeDensityArrayFunct(mat phin, mat phip, bool Equilibrum) {
-	if ( phin.elem != sumPoint || ( phip.elem != sumPoint && phip != nullptr) )
+	if ( phin.n_elem != sumPoint || ( phip.n_elem != sumPoint ) )
 		std::cerr << "Error: input wrong phin/phip size!" << std::endl;
     mat density=zeros(sumPoint);
 
-	if (Equilibrum == true && phip == nullptr) {
+	if (Equilibrum == true ) {
 		for ( int i = 0; i < bandGapArray.size(); i++) {
 			phip(i) = bandGapArray[i] - phin(i);
 		}
-	} else if (Equilibrum == true && phip != nullptr) {
-		std::cerr << "Error: set phip = nullptr when at equilibrum." << std::endl;
 	}
 
     int k=0;
@@ -249,24 +261,22 @@ mat Device1D::chargeDensityArrayFunct(mat phin, mat phip, bool Equilibrum) {
     return ( density );
 }
 
-mat Device1D::qCMatFunct(mat phin, mat phip, bool Equilibrum) {
-	if ( phin.elem != sumPoint || ( phip.elem != sumPoint && phip != nullptr) )
+sp_mat Device1D::qCMatFunct(mat phin, mat phip, bool Equilibrum) {
+	if ( phin.n_elem != sumPoint || ( phip.n_elem != sumPoint ) )
 		std::cerr << "Error: input wrong phin/phip size!" << std::endl;
-    mat cp=zeros(sumPoint);
+    sp_mat cp=speye(sumPoint, sumPoint);
 
-	if (Equilibrum == true && phip == nullptr) {
+	if (Equilibrum == true ) {
 		for ( int i = 0; i < bandGapArray.size(); i++) {
 			phip(i) = bandGapArray[i] - phin(i);
 		}
-	} else if (Equilibrum == true && phip != nullptr) {
-		std::cerr << "Error: set phip = nullptr when at equilibrum." << std::endl;
 	}
 
     int k=0;
     for ( int i=0; i < materialList.size(); i++) {
         for ( int j=0; j < nyList[i]; j++) {
             if (typeArray[i] == Semiconductor) {
-                cp(k) = materialList[i].quantumCapa((double)phin(k), (double)phip(k)); // why here used to be k+1, then "carrierDensity[0]=carrierDensity[1];"
+                cp(k, k) = materialList[i].quantumCapa((double)phin(k), (double)phip(k)); // why here used to be k+1, then "carrierDensity[0]=carrierDensity[1];"
             } else if (typeArray[i]==Dielectric) {
              };
             k++;

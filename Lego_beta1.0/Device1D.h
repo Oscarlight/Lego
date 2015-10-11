@@ -43,15 +43,15 @@ public:
 	mat getPnIArray(); // get phinInitArray in mat type
 	mat getPpIArray(); // get phipInitArray in mat type
 	int getSumPoint(); // get sumPoint
+	int getBBT();
+	int getTBT();
 	sp_mat getMatrixC();
 
 	// related function
 	mat eDensityArrayFunct(mat phin); // mat == Map<double>
 	mat hDensityArrayFunct(mat phip);
 	mat chargeDensityArrayFunct(mat phin, mat phip, bool Equilibrum);
-	mat qCMatFunct(mat phin, mat phip, bool Equilibrum);
-
-protected:
+	sp_mat qCMatFunct(mat phin, mat phip, bool Equilibrum);
 	mat vec2Mat(std::vector<double> vec); // change dynamic type vector to static type mat
 };
 

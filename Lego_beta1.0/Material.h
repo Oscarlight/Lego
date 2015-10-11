@@ -12,7 +12,8 @@
 
 class Material : public Params {
 
-protected:
+//protected:
+public:
     int index;
     int type;
     std::string name;
@@ -30,17 +31,19 @@ protected:
     int gvV;
 
 public:
+    Material(); // // Every constructor in the inheritance hierarchy gets called, in the order Base -> Derived. Destructors get called in the reverse order.
     Material(double _T, int _index, int _type, const char *pname, double _dielectricConstant, double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
         	double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV);
     Material(int _index, int _type, const char *pname, double _dielectricConstant, double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
     		double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV);
-	virtual ~Material();
+    virtual ~Material();
 
 public:
 	double electronDensity(double phin);
 	double holeDensity(double phip);
     double chargeDensity(double phin, double phip);
     double quantumCapa(double phin, double phip);
+
 };
 
 #endif /* MATERIAL_H_ */

@@ -8,7 +8,7 @@
 #include "Params.h"
 
 Params::Params() {
-	std::cout << "default constructor of Params is called with T = 300 K" << std::endl;
+	std::cout << "Default constructor of Params is called with T = 300 K" << std::endl;
 	init();
 }
 
@@ -47,11 +47,11 @@ double Params::sLN(double a) {
  * set 1/1.6E-19 C as unit of charge
  */
 double Params::cNL(double a) {
-	return (a / ChargeQ);
+	return (a / nat_ChargeQ);
 }
 
 double Params::cLN(double a) {
-	return (a * ChargeQ);
+	return (a * nat_ChargeQ);
 }
 
 /**

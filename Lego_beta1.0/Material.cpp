@@ -6,7 +6,9 @@
  */
 
 #include "Material.h"
-
+Material::Material() {
+	std::cout << "Default constructor of Material is called." << std::endl;
+}
 /**
  * Constructor using default T
  */
@@ -30,7 +32,7 @@ Material::Material(int _index, int _type, const char *pname, double _dielectricC
 Material::Material(double _T, int _index, int _type, const char *pname, double _dielectricConstant, \
 				  double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
 				  double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV) : Params(_T) {\
-            this -> Material(_index, _type, *pname, _dielectricConstant, _dieleIP, _electronAffinity, _bandGap, _dimension, _t2D, \
+            Material(_index, _type, pname, _dielectricConstant, _dieleIP, _electronAffinity, _bandGap, _dimension, _t2D, \
 					         _Nd, _Na, _mcEff, _mvEff, _gvC, _gvV);
 		    std::cout << "Initialize Material " << pname << " with T = " << _T << std::endl;
 }
