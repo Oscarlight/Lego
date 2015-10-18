@@ -48,28 +48,32 @@ CU_O = lib/cubature-1.0.2/pcubature.o
 
 all : $(target)
 
-$(target): $(OBJ)  MathFunct.o Params.o Material.o Device1D.o Poisson1D.o Transport.o ExtractData.o $(CU_O)
-	$(CC) $(CFLAGS) $(OBJ) MathFunct.o Params.o Material.o Device1D.o Poisson1D.o Transport.o ExtractData.o $(CU_O) -o $(target)  $(MYLIBS)
+$(target): $(OBJ)  MathFunct.o Params.o Material.o Device1D.o Poisson1D.o Transport.o Tunnelling.o ExtractData.o InOut.o $(CU_O)
+	$(CC) $(CFLAGS) $(OBJ) MathFunct.o Params.o Material.o Device1D.o Poisson1D.o Transport.o Tunnelling.o ExtractData.o InOut.o $(CU_O) -o $(target)  $(MYLIBS)
 	
 $(OBJ) : $(SRCDIR)$(SRC)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)$(SRC)
 
-MathFunct.o : $(SRCDIR)MathFunct.cpp   $(INCLUDEDIR)MathFunct.h
+MathFunct.o : $(SRCDIR)MathFunct.cpp   	 $(INCLUDEDIR)MathFunct.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)MathFunct.cpp
-Params.o : $(SRCDIR)Params.cpp	       $(INCLUDEDIR)Params.h
+Params.o : $(SRCDIR)Params.cpp	       	 $(INCLUDEDIR)Params.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Params.cpp
-Material.o : $(SRCDIR)Material.cpp     $(INCLUDEDIR)Material.h
+Material.o : $(SRCDIR)Material.cpp     	 $(INCLUDEDIR)Material.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Material.cpp
-Device1D.o : $(SRCDIR)Device1D.cpp     $(INCLUDEDIR)Device1D.h
+Device1D.o : $(SRCDIR)Device1D.cpp     	 $(INCLUDEDIR)Device1D.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Device1D.cpp
-Strain.o : $(SRCDIR)Strain.cpp	       $(INCLUDEDIR)Strain.h
+Strain.o : $(SRCDIR)Strain.cpp	       	 $(INCLUDEDIR)Strain.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Strain.cpp
-Poisson1D.o : $(SRCDIR)Poisson1D.cpp   $(INCLUDEDIR)Poisson1D.h
+Poisson1D.o : $(SRCDIR)Poisson1D.cpp   	 $(INCLUDEDIR)Poisson1D.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Poisson1D.cpp
-Transport.o : $(SRCDIR)Transport.cpp   $(INCLUDEDIR)Transport.h
+Transport.o : $(SRCDIR)Transport.cpp   	 $(INCLUDEDIR)Transport.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Transport.cpp
-ExtractData.o : $(SRCDIR)ExtractData.cpp     $(INCLUDEDIR)ExtractData.h
+Tunnelling.o : $(SRCDIR)Tunnelling.cpp 	 $(INCLUDEDIR)Tunnelling.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Tunnelling.cpp
+ExtractData.o : $(SRCDIR)ExtractData.cpp $(INCLUDEDIR)ExtractData.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)ExtractData.cpp
+InOut.o :     $(SRCDIR)InOut.cpp         $(INCLUDEDIR)InOut.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)InOut.cpp
 	
 .phony : clean
 

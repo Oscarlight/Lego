@@ -1,0 +1,65 @@
+/* Material File */
+
+[SiO2]
+	Type = Dielectric
+	er_y = 3.9
+	er_x = 3.9
+	Electron_Affinity = 1
+	Bandgap = 9
+	Dimension = 3
+	Monolayer_Thickness = 0 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 0 
+	mc_eff = 0
+	mv_eff = 0
+	gv_of_Ec = 0
+	gc_of_Ev = 0
+
+[vdWGap]
+	Type = Dielectric
+	er_y = 1
+	er_x = 1
+	Electron_Affinity = 4
+	Bandgap = 2
+	Dimension = 3
+	Monolayer_Thickness = 0 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 0 
+	mc_eff = 0
+	mv_eff = 0
+	gv_of_Ec = 0
+	gc_of_Ev = 0
+
+[WSe2_2D]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 6
+	Electron_Affinity = 4
+	Bandgap = 1.3
+	Dimension = 2
+	Monolayer_Thickness = 0.6 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 0 
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gc_of_Ev = 2
+
+[SnSe2_2D]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 6
+	Electron Affinity = 5.1
+	Bandgap = 1
+	Dimension = 2
+	Monolayer Thickness = 0.6 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 0 
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gc_of_Ev = 2
