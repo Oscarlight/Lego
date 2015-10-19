@@ -3,7 +3,7 @@ by Mingda Oscar Li (ml888@cornell.edu)
 
 1. Introduction
 	LEGO is the open source electical device simulator.
-	The current version Beta v1.0 is tailed for Thin-TFET exclusively, it include 
+	The current version Beta v1.0 is tailored for Thin-TFET exclusively, it include 
 		1) Electrostatics: 1D Poisson for 3D and 2D semiconductor. 
 		2) Tranport: 2D to 2D interlayer quantum tunneling current simulation.
 
