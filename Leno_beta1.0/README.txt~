@@ -16,7 +16,7 @@ Copyright (c) 2015-2016 Mingda Oscar Li (ml888@cornell.edu)
 3. Class dependency:
 	MathFunct -> Params -> Material -> Device1D -> Device2D
 
-		   	    -> Poisson  -> Poisson1D -> Poisson2D
+		   	    -> Poisson1D -> Poisson2D
 
 		            -> Current  -> Tunneling
 

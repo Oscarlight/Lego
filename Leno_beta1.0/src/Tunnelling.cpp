@@ -61,8 +61,8 @@ int f_interband(unsigned ndim, const double *x, void *fdata, unsigned fdim, doub
 	if ( std::abs(Ect - Evb)  >  std::abs(Evt - Ecb)) {  // p type
 		Eckf = Ecb + SQUARE(Planckba) * SQUARE(kt)/(2*mct*ChargeQ);
 		Evkf = Evt - SQUARE(Planckba) * SQUARE(kb)/(2*mvb*ChargeQ);
-		Ef_f = Eckf;
-		Ef_i = Evkf + Vds;
+		Ef_f = Eckf + Vds; // so P-type current is negative
+		Ef_i = Evkf;
 	} else { // n type
 		Eckf = Ect + SQUARE(Planckba) * SQUARE(kt)/(2*mct*ChargeQ);
 		Evkf = Evb - SQUARE(Planckba) * SQUARE(kb)/(2*mvb*ChargeQ);
@@ -131,14 +131,26 @@ int f_likeBand(unsigned ndim, const double *x, void *fdata, unsigned fdim, doubl
     // double Pq_c = 1, Pq_v = 1;
 
     // Fermi Distribution
-    double Ecfb = Eckb;
-    double Ecft = Eckt + Vds;
+    // TODO: where to + Vds; originally add to Eckt
+    double Ecfb, Ecft, Evft, Evfb;
+    if ( std::abs(Ect - Evb)  >  std::abs(Evt - Ecb)) {  // p type
+    	Ecfb = Eckb + Vds;
+    	Ecft = Eckt;
+    } else { // n-type
+        Ecfb = Eckb;
+        Ecft = Eckt + Vds;
+    }
     double FDD_c = 1/(1 + std::exp(Ecft/Vth)) - 1/(1 + std::exp(Ecfb/Vth)); // Boltzman Distribution may work as well
     double FDD_c0 = 1/(1 + std::exp(Eckt/Vth)) - 1/(1 + std::exp(Eckb/Vth));
     FDD_c -= FDD_c0;
-
-    double Evfb = Evkb;
-    double Evft = Evkt + Vds;
+    // TODO: where to + Vds; originally add to Evkt
+    if ( std::abs(Ect - Evb)  >  std::abs(Evt - Ecb)) {  // p type
+    	Evfb = Evkb + Vds;
+    	Evft = Evkt;
+    } else {
+    	Evfb = Evkb;
+    	Evft = Evkt + Vds;
+    }
     double FDD_v = 1/(1 + std::exp(Evft/Vth)) - 1/(1 + std::exp(Evfb/Vth)); // how to reverse +/- for hole branch current, may be wrong
     double FDD_v0 = 1/(1 + std::exp(Evkt/Vth)) - 1/(1 + std::exp(Evkb/Vth));
     FDD_v -= FDD_v0;
@@ -189,13 +201,13 @@ double Tunnelling::interTunnel2DOFP(double Ect, double Evt, double Ecb, double E
 	double fdata[] = {mb0Square, ovSquare, correlationLengthSquare, broadenConstantSquare, Ect, Evt, Ecb, Evb, mvt, mcb, mct, mvb, Vds, mink, Planckba, Planckba_ev, ChargeQ, Pi, Vth};
     pcubature(1, f_interband, fdata, 3, xmin, xmax, 0, 0, precision, ERROR_INDIVIDUAL, &val, &err);
     //
-
-    printf("inter-band tunnel current = %0.10g +/- %g A/m \n", val * cLN(1)/sLN(1) / SQUARE(cmLN(1)) * 1E4 * 15E-9,
+    double j = val * cLN(1)/sLN(1) / SQUARE(cmLN(1)); // A/cm^2
+    printf("inter-band tunnel current = %0.10g +/- %g A/m \n", j * 1E4 * 15E-9,
     		err * cLN(1)/sLN(1) / SQUARE(cmLN(1)) * 1E4 * 15E-9);
 
-    interTunnelCurrent.push_back(val);
+    interTunnelCurrent.push_back(j);
 
-    return (val);
+    return (j);
 }
 
 
@@ -223,13 +235,14 @@ double Tunnelling::likeTunnel2DOFP(double Ect, double Evt, double Ecb, double Ev
     double fdata[] = {mb0Square, ovSquare, correlationLengthSquare, broadenConstantSquare, Ect, Evt, Ecb, Evb, mvt, mcb, mct, mvb, Vds, mink, Planckba, Planckba_ev, ChargeQ, Pi, Vth};
     pcubature(1, f_likeBand, fdata, 3, xmin, xmax, 0, 0, precision, ERROR_INDIVIDUAL, &val, &err);
     // accuracy also important
-    //
-    printf("like-band tunnel current = %0.10g +/- %g A/m \n", val * cLN(1)/sLN(1) / SQUARE(cmLN(1)) * 1E4 * 15E-9,
+    // TODO: find out why I have to add "-" here
+    double j = - val * cLN(1)/sLN(1) / SQUARE(cmLN(1)); // A/cm^2
+    printf("like-band tunnel current = %0.10g +/- %g A/m \n", j * 1E4 * 15E-9,
     		err * cLN(1)/sLN(1) / SQUARE(cmLN(1)) * 1E4 * 15E-9 );
 
-    likeTunnelCurrent.push_back(val);
+    likeTunnelCurrent.push_back(j);
 
-    return (val);
+    return (j);
 }
 
 

@@ -89,23 +89,27 @@ void InOut::readDevice(std::string filename) {
 	else if (ifile("Sava_Plots", "") == "No")
 			savePl = false;
 
-	ifile.set_prefix("Plot/VRange/");
-    vtgPl[0]=(ifile("Vtg", 0.0, 0));
-    vtgPl[1]=(ifile("Vtg", 0.0, 1));
-
-    vbgPl[0]=(ifile("Vbg", 0.0, 0));
-    vbgPl[1]=(ifile("Vbg", 0.0, 1));
-
-    vdsPl[0]=(ifile("Vds", 0.0, 0));
-    vdsPl[1]=(ifile("Vds", 0.0, 1));
+//	ifile.set_prefix("Plot/VRange/");
+//    vtgPl[0]=(ifile("Vtg", 0.0, 0));
+//    vtgPl[1]=(ifile("Vtg", 0.0, 1));
+//
+//    vbgPl[0]=(ifile("Vbg", 0.0, 0));
+//    vbgPl[1]=(ifile("Vbg", 0.0, 1));
+//
+//    vdsPl[0]=(ifile("Vds", 0.0, 0));
+//    vdsPl[1]=(ifile("Vds", 0.0, 1));
 
 
 	ifile.set_prefix("Save/");
-	if (ifile("Save_Band_Alignment ", "") == "Yes")
+	if (ifile("Save_Band_Alignment", "") == "Yes")
 		saveBA = true;
-	else if (ifile("Plot_Band_Alignment", "") == "No")
+	else if (ifile("Save_Band_Alignment", "") == "No")
 			saveBA = false;
 
+	if (ifile("Save_I-V", "") == "Yes")
+		saveIV = true;
+	else if (ifile("Save_I-V", "") == "No")
+			saveIV = false;
 }
 
 
@@ -151,3 +155,53 @@ void InOut::readMaterial(std::string filename) {
 	}
 
 }
+
+void InOut::storeIV(double Vtg, double Vbg, double Vds, std::vector<double> current) {
+	std::vector<double> voltage;
+	voltage.push_back(Vtg);
+	voltage.push_back(Vbg);
+	voltage.push_back(Vds);
+	ivMap.insert(std::pair<std::vector<double>, std::vector<double>>(voltage, current));
+}
+
+void InOut::writeBAandCharge(std::string fileName, std::vector<double> x, std::vector<double> cB, std::vector<double> vB, std::vector<double> fLn, std::vector<double> fLp, std::vector<double> chargeDensity) {
+	std::ofstream myfile;
+	myfile.open((fileName+".csv").c_str());
+	myfile << "Position(nm)" << ", " << "ConductionBand" << ", " << "ValenceBand" << ", " << "electronFermiLevel" << ", " << "holeFermiLevel" << ", " << "ChargeDensiy(1/cm2)" << "\n";
+	for (int i = 0; i < cB.size(); i++) {
+		// double to string method 1
+		std::ostringstream s1,s2,s3,s4,s5,s6;
+		s1 << x[i]; s2 << cB[i]; s3 << vB[i]; s4 << fLn[i]; s5 << fLp[i]; s6 << chargeDensity[i];
+		std::string ss1 = s1.str();
+		std::string ss2 = s2.str();
+		std::string ss3 = s3.str();
+		std::string ss4 = s4.str();
+		std::string ss5 = s5.str();
+		std::string ss6 = s6.str();
+		myfile << ss1 << ", " << ss2 << ", " << ss3 << ", " << ss4 << ", " << ss5 << ", " << ss6 << "\n";
+	}
+	myfile.close();
+}
+
+void InOut::writeIV(std::string fileName, std::map<std::vector<double>, std::vector<double>> ivMap) {
+	std::ofstream myfile;
+	myfile.open((fileName+".csv").c_str());
+	myfile << "Vtg" << ", " << "Vbg" << ", " << "Vds" << ", " << "Inter_Band_tunnel_current(A/cm^2)" << ", " << "Inter+like_Band_tunnel_current(A/cm^2)" << "\n";
+	for (std::map<std::vector<double>, std::vector<double>>::iterator it = ivMap.begin(); it != ivMap.end(); ++it) {
+		for (int i = 0; i < it->first.size(); i++) {
+			// double to string method 2
+			myfile << std::to_string(it->first[i]) << ", ";
+		}
+		for (int i = 0; i < it->second.size(); i++) {
+			myfile << std::to_string(it->second[i]) << ", ";
+		}
+		myfile << "\n";
+	}
+	myfile.close();
+}
+
+std::map<std::vector<double>, std::vector<double>> InOut::getIVMap() {
+	return (ivMap);
+}
+
+

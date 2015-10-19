@@ -41,13 +41,6 @@ int main( int argc, char** argv )
     io.readMaterial(MaterialFile);
     // io.printInfo();
 
-    //	double t2D = 0.6; // nm
-    //	Params param;
-    //	Material   WSe2(0, param.Semiconductor,  "WSe2", 1,     6,   4, 1.3, 2, t2D, 0, 0, 0.3, 0.4, 2, 2);
-    //    Material  SnSe2(1, param.Semiconductor, "SnSe2", 3.9,   6, 5.1, 1,   2, t2D, 0, 0, 0.3, 0.4, 2, 2);
-    //    Material   SiO2(2, param.Dielectric,     "SiO2", 3.9, 3.9,   1, 9,   3, 0,   0, 0,   0,   0, 0, 0);
-    //    Material vdWGap(2, param.Dielectric,   "vdWGap", 1, 	  1, 4, 2,   3, 0,   0, 0,   0,   0, 0, 0);
-
 	// create Materials, with default T = 300 K
 	Params param;
 	std::map<std::string, Material> matLib;
@@ -68,37 +61,29 @@ int main( int argc, char** argv )
     // create device1D
     Device1D dev1D;
     dev1D.startWith(matLib.at(io.layerName[0]), io.layerThickness[0], io.layerPoint[0], io.botBT);
-    std::cout << io.layerName[0] << "," << io.layerThickness[0] << "," << io.layerPoint[0] << std::endl;
+    // std::cout << io.layerName[0] << "," << io.layerThickness[0] << "," << io.layerPoint[0] << std::endl;
     for (int i = 1; i < io.layerNum-1; i++) {
     dev1D.add(matLib.at(io.layerName[i]), io.layerThickness[i], io.layerPoint[i]);
-    std::cout << io.layerName[i] << "," << io.layerThickness[i] << "," << io.layerPoint[i] << std::endl;
+    // std::cout << io.layerName[i] << "," << io.layerThickness[i] << "," << io.layerPoint[i] << std::endl;
     }
     dev1D.endWith(matLib.at(io.layerName[io.layerNum-1]), io.layerThickness[io.layerNum-1],
     		io.layerPoint[io.layerNum-1], io.topBT);
-    std::cout << io.layerName[io.layerNum-1] << "," << io.layerThickness[io.layerNum-1] << "," << io.layerPoint[io.layerNum-1] << std::endl;
+    // std::cout << io.layerName[io.layerNum-1] << "," << io.layerThickness[io.layerNum-1] << "," << io.layerPoint[io.layerNum-1] << std::endl;
     dev1D.matrixDiff();
-
-
-//     create device1D
-//    Device1D dev1D;
-//    dev1D.startWith(matLib.at(io.layerName[0]), 1, 100, param.Dirichlet);
-//    dev1D.add(matLib.at(io.layerName[1]), 0, 0);
-//    //dev1D.add(WSe2, 0, 0);
-//    dev1D.add(matLib.at(io.layerName[2]), 0.35, 35);
-//    //dev1D.add(SnSe2, 0, 0);
-//    dev1D.add(matLib.at(io.layerName[3]), 0, 0);
-//    dev1D.endWith(matLib.at(io.layerName[4]), 1, 100, param.Dirichlet);
-//    dev1D.matrixDiff();
 
     // calculate Poisson1D
     Poisson1D p1D(dev1D);
     std::vector<double> vtgArray =p1D.rangeByStep(io.vtgArray[0], io.vtgArray[1], io.vtgArray[2]);
     std::vector<double> vbgArray =p1D.rangeByStep(io.vbgArray[0], io.vbgArray[1], io.vbgArray[2]);
     std::vector<double> vdsArray =p1D.rangeByStep(io.vdsArray[0], io.vdsArray[1], io.vdsArray[2]);
-    Tunnelling t;
+
     for (double Vbg : vbgArray) {
-    	for (double Vtg : vtgArray) {
-    		for (double Vds : vdsArray) {
+    	for (double Vds : vdsArray) {
+    		Tunnelling t;
+    		std::vector<double> iArray;
+    		for (double Vtg : vtgArray) {
+    			std::cout << "Vbg = " << Vbg << " V; " << "Vtg = " << Vtg << " V; " << "Vds = " << Vds << " V;" << std::endl;
+
     			p1D.setGateBias(Vtg, io.topWF, Vbg, io.botWF);
     			std::vector<double> fLn(dev1D.getSumPoint(), 0);
     			fLn.at(1 + io.layerPoint[0] + 1 + io.layerPoint[2]) = - Vds;
@@ -110,23 +95,61 @@ int main( int argc, char** argv )
     			ExtractData data;
     			data.bandAndCharge(p1D, dev1D);
 
-    			//plot
-    			//    		    plt::plot(data.x, data.cB);
-    			//    		    plt::plot(data.x, data.vB);
-    			//    		    plt::plot(data.x, data.fLn, "r--");
-    			//    		    plt::plot(data.x, data.fLp, "b--");
-    			//    		    // plt::show();
+    			//band alignment plot
+    			if (io.saveBA == true)
+    				// io.writeBAandCharge(("./data/BA/Band_Alignment_at_Vtg="+std::to_string(Vtg)+"_Vbg="+std::to_string(Vbg)+"_Vds="+std::to_string(Vds)),
+    				//		data.x, data.cB, data.vB, data.fLn, data.fLp, data.chargeDensity);
+    				io.writeBAandCharge(("Band_Alignment_at_Vtg="+std::to_string(Vtg)+"_Vbg="+std::to_string(Vbg)+"_Vds="+std::to_string(Vds)),
+						data.x, data.cB, data.vB, data.fLn, data.fLp, data.chargeDensity);
+    			if (io.plotBA == true) {
+    				plt::plot(data.x, data.cB);
+    				plt::plot(data.x, data.vB);
+    				plt::plot(data.x, data.fLn, "r--");
+    				plt::plot(data.x, data.fLp, "b--");
+    				plt::show();
+    			}
+//    		    if (io.savePl == true)
+//    		    	//TODO save throw runtime_err
+//    		    	// plt::save("./plots/BA/BA.png");
 
     			// current
     			data.bASemiOnly();
-    			t.interTunnel2DOFP(data.cBSemi[1], data.vBSemi[1], data.cBSemi[0], data.vBSemi[0], data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
+    			double iJ = t.interTunnel2DOFP(data.cBSemi[1], data.vBSemi[1], data.cBSemi[0], data.vBSemi[0], data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
+    			double lJ = t.likeTunnel2DOFP(data.cBSemi[1], data.vBSemi[1], data.cBSemi[0], data.vBSemi[0], data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
+
+    			// Store
+    			std::vector<double> current;
+    			current.push_back(iJ);
+    			// current.push_back(lJ);
+    			current.push_back(iJ+lJ);
+    			iArray.push_back(iJ+lJ);
+    			io.storeIV(Vtg, Vbg, Vds, current);
+
     		}
+    	    if (io.plotIV == true) {
+    	    	//TODO Sometime when program is terminated in the middle, plots can not be closed.
+    	    	plt::plot(vtgArray, iArray);
+    	    	plt::show();
+    	    }
+//    	    if (io.savePl == true)
+//    	    	//TODO save throw runtime_err
+//    	    	// plt::save("./plots/IV/I-Vds.png");
+
     	}
     }
-    //plt::show();
-    std::vector<double> iArray = t.getInterTunnelCurrent();
-    plt::plot(vtgArray, iArray);
-    plt::show();
+
+    if (io.saveIV == true) {
+    	//io.writeIV(("./data/IV/"+io.devName+"_"+io.userCom), io.getIVMap());
+    	io.writeIV((io.devName+"_"+io.userCom), io.getIVMap());
+    	std::cout << "--------End---------"<< std::endl;
+    }
+
+
+
+
+
+
+
 }
 
 

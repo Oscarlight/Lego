@@ -36,7 +36,7 @@ bool ExtractData::bandAndCharge(Poisson1D p1D, Device1D dev1D) {
 	double sum = 0;
 	for (int i = 0; i < cB.size(); i++) {
 		x.push_back(sum);
-		sum += cmLN(spacing[i]);
+		sum += (cmLN(spacing[i])*1E7); // x in nm;
 	}
 	typeArray = dev1D.getTArray();
 	return (bandAndChargeDone = true);

@@ -126,9 +126,11 @@ std::vector<double> Poisson1D::rangeByNum(double begin, double end, double numbe
 
 std::vector<double> Poisson1D::rangeByStep(double begin, double end, double step) {
 	std::vector<double> v;
-	v.push_back(begin);
-	for (double i = begin; i < end; i+=step){
+	// Preventing double precision error (< 10000)
+	for (double i = begin; i*10000 < ceil((end)*10000); i+=step){
+		// std::cout << i*10000 << ceil((end-step)*10000) << std::endl;
 		v.push_back(i);
 	}
+	v.push_back(end);
 	return (v);
 }

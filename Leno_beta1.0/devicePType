@@ -1,0 +1,66 @@
+/* Device File */
+
+[Device1D]
+	Device_Name = p-Thin_TFET
+	User_Comment = test
+	Layer_Number = 5
+
+		[./Boundary]
+		Bottom_Boundary_Type = Dirichlet
+		Bottom_Gate_Workfunction = 5.05
+		Top_Boundary_Type = Dirichlet
+		Top_Gate_Workfunction = 5.4	
+
+[Layer1] /* from bottom to top */
+	Material = SiO2
+	Thickness = 1  /* nm */
+	Ny = 100 /* points in y direction (thickness) */
+
+[Layer2]
+	Material = SnSe2_2D
+	Thickness = 0
+	Ny = 0
+
+[Layer3]
+	Material = vdWGap
+	Thickness = 0.35
+	Ny = 35
+
+[Layer4]
+	Material = WSe2_2D
+	Thickness = 0
+	Ny = 0
+
+[Layer5]
+	Material = SiO2
+	Thickness = 1
+	Ny = 100
+		
+
+[Vtg]
+	Vtg_From = -0.4
+	Vtg_To = 0
+	Vtg_Step = 0.01
+[Vbg]
+	Vbg_From = 0
+	Vbg_To = 0
+	Vbg_Step = 0
+[Vds]
+	Vds_From = -0.4
+	Vds_To = -0.4
+	Vds_Step = 0
+
+
+[Plot]
+Plot_Band_Alignment = No
+Plot_I-V = Yes
+Save_Plots = No	/* no working yet */
+
+[Save]
+Save_Band_Alignment = No
+Save_I-V = Yes
+
+
+
+	 
+
