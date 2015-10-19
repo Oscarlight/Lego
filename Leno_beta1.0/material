@@ -2,19 +2,19 @@
 
 [SiO2]
 	Type = Dielectric
-	er_y = 3.9
-	er_x = 3.9
+	er_y = 3.9	/* relative dielectric constant in vertical direction */
+	er_x = 3.9	/* relative dielectric constant in lateral direction */
 	Electron_Affinity = 1
 	Bandgap = 9
 	Dimension = 3
 	Monolayer_Thickness = 0 /* ignore it for 3D material */
 	/* ignore the following for Dielectric type */
-	Nd = 0 
-	Na = 0 
-	mc_eff = 0
-	mv_eff = 0
-	gv_of_Ec = 0
-	gc_of_Ev = 0
+	Nd = 0 		/* donor density 1/cm^3 */
+	Na = 0 		/* Acceptor density 1/cm^3 */
+	mc_eff = 0	/* electron effective mass */
+	mv_eff = 0	/* hole effective mass */
+	gv_of_Ec = 0	/* conduction band valley degeneracy */
+	gv_of_Ev = 0	/* valence band valley degeneracy */
 
 [vdWGap]
 	Type = Dielectric
@@ -30,7 +30,7 @@
 	mc_eff = 0
 	mv_eff = 0
 	gv_of_Ec = 0
-	gc_of_Ev = 0
+	gv_of_Ev = 0
 
 [WSe2_2D]
 	Type = Semiconductor
@@ -39,14 +39,14 @@
 	Electron_Affinity = 4
 	Bandgap = 1.3
 	Dimension = 2
-	Monolayer_Thickness = 0.6 /* ignore it for 3D material */
+	Monolayer_Thickness = 0.01 /* ignore it for 3D material */
 	/* ignore the following for Dielectric type */
 	Nd = 0 
 	Na = 0 
 	mc_eff = 0.3
 	mv_eff = 0.4
 	gv_of_Ec = 2
-	gc_of_Ev = 2
+	gv_of_Ev = 2
 
 [SnSe2_2D]
 	Type = Semiconductor
@@ -55,11 +55,11 @@
 	Electron_Affinity = 5.1
 	Bandgap = 1
 	Dimension = 2
-	Monolayer_Thickness = 0.6 /* ignore it for 3D material */
+	Monolayer_Thickness = 0.01 /* ignore it for 3D material */
 	/* ignore the following for Dielectric type */
 	Nd = 0 
 	Na = 0 
 	mc_eff = 0.3
 	mv_eff = 0.4
 	gv_of_Ec = 2
-	gc_of_Ev = 2
+	gv_of_Ev = 2

@@ -2,45 +2,47 @@
 
 [Device1D]
 	Device_Name = n-Thin_TFET
-	User_Comment = test
-	Layer_Number = 5
+	User_Comment = test        /* One word comment */
+	Layer_Number = 5           /* For Thin-TFET, it is always 5 layars */
 
-		[./Boundary]
-		Bottom_Boundary_Type = Dirichlet
-		Bottom_Gate_Workfunction = 5.5
-		Top_Boundary_Type = Dirichlet
-		Top_Gate_Workfunction = 5.1
+		[./Boundary]       
+		Bottom_Boundary_Type = Dirichlet   /* You don't need to change it */
+		Bottom_Gate_Workfunction = 5.65     /* Change it if you like to use another metal */
+		Top_Boundary_Type = Dirichlet      /* You don't need to change it */
+		Top_Gate_Workfunction = 5.05        /* Change it if you like to use another metal */
 
-[Layer1] /* from bottom to top */
+[Layer1] /* Back Gate Oxide */
 	Material = SiO2
 	Thickness = 1  /* nm */
 	Ny = 100 /* points in y direction (thickness) */
 
-[Layer2]
+[Layer2] /* Bottom 2D Layer */
 	Material = WSe2_2D
 	Thickness = 0
 	Ny = 0
 
-[Layer3]
+[Layer3] /* van der Waals gap */
 	Material = vdWGap
 	Thickness = 0.35
 	Ny = 35
 
-[Layer4]
+[Layer4] /* Top 2D Layer */
 	Material = SnSe2_2D
 	Thickness = 0
 	Ny = 0
 
-[Layer5]
+[Layer5] /* Top Gate Oxide */
 	Material = SiO2
 	Thickness = 1
 	Ny = 100
 		
 
-[Vtg]
+/* all unit is V */
+/* From small value to large value */
+[Vtg] 
 	Vtg_From = 0
 	Vtg_To = 0.4
-	Vtg_Step = 0.01
+	Vtg_Step = 0.02
 [Vbg]
 	Vbg_From = 0
 	Vbg_To = 0
@@ -52,13 +54,13 @@
 
 
 [Plot]
-Plot_Band_Alignment = No
-Plot_I-V = No
-Save_Plots = No	/* no working yet */
+Plot_Band_Alignment = No /* Not recommend to put "Yes" when doing I-V, but you can */
+Plot_I-V = No		 /* Not recommend to put "Yes" when change more than one terminal, e.g. Vds and Vtg */	
+Save_Plots = No	         /* no working yet */
 
 [Save]
-Save_Band_Alignment = No
-Save_I-V = Yes
+Save_Band_Alignment = No /* Not recommend to put "Yes" when doing I-V, but you can */
+Save_I-V = Yes		 /* recommend to always put "Yes" here */
 
 
 

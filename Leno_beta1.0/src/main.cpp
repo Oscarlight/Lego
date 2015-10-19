@@ -90,6 +90,7 @@ int main( int argc, char** argv )
     			p1D.setFLnArray(fLn);
     			p1D.setFLpArray(fLn); // in Equilibrum Fln = Flp
     			p1D.runPoisson1D(0.001, 1E10, 1,  true);
+    			std::cout << "Poisson Finished" << std::endl;
 
     			// extract data
     			ExtractData data;

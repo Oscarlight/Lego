@@ -58,6 +58,7 @@ void Device1D::startWith(Material m, double _t, int _n, int _bottomBoundaryType)
 	// store the material and the # of read points
 	materialList.push_back(m);
 	nyList.push_back(n+1);
+	typeList.push_back(m.type);
 	/**
     * take an example
     * Original: Ny: 3, 3, 2, 3, 3: # of points = 14
@@ -104,6 +105,7 @@ void Device1D::add(Material m, double _t, int _n) {
 	// store the material and the # of read points
 	materialList.push_back(m);
 	nyList.push_back(n);
+	typeList.push_back(m.type);
 	// 	extend arrays
 	dieleArray.insert(dieleArray.end(), n, m.dieleY);
 	spacingArray.insert(spacingArray.end(), n, spacingY);
@@ -216,9 +218,9 @@ mat Device1D::eDensityArrayFunct(mat phin) {
     int k=0;
     for ( int i=0; i < materialList.size(); i++) {
         for ( int j=0; j < nyList[i]; j++) {
-            if (typeArray[i] == Semiconductor) {
+            if (typeList[i] == Semiconductor) {
                 density(k) = materialList[i].electronDensity( (double)phin(k) ); // why here used to be k+1, then "carrierDensity[0]=carrierDensity[1];"
-            } else if (typeArray[i]==Dielectric) {
+            } else if (typeList[i]==Dielectric) {
              };
             k++;
         };
@@ -234,9 +236,9 @@ mat Device1D::hDensityArrayFunct(mat phip) {
     int k=0;
     for ( int i=0; i < materialList.size(); i++) {
         for ( int j=0; j < nyList[i]; j++) {
-            if (typeArray[i] == Semiconductor) {
+            if (typeList[i] == Semiconductor) {
                 density(k) = materialList[i].holeDensity( (double)phip(k) ); // why here used to be k+1, then "carrierDensity[0]=carrierDensity[1];"
-            } else if (typeArray[i]==Dielectric) {
+            } else if (typeList[i]==Dielectric) {
              };
             k++;
         };
@@ -254,17 +256,21 @@ mat Device1D::chargeDensityArrayFunct(mat phin, mat phip, bool Equilibrum) {
 			phip(i) = bandGapArray[i] - phin(i);
 		}
 	}
-
+	// std::cout << materialList.size() << std::endl;
     int k=0;
     for ( int i=0; i < materialList.size(); i++) {
+    	// std::cout << nyList[i] << std::endl;
+    	// std::cout << typeArray[i] << std::endl;
         for ( int j=0; j < nyList[i]; j++) {
-            if (typeArray[i] == Semiconductor) {
-                density(k) = materialList[i].chargeDensity((double)phin(k), (double)phip(k)); // why here used to be k+1, then "carrierDensity[0]=carrierDensity[1];"
-            } else if (typeArray[i]==Dielectric) {
+            if (typeList[i] == Semiconductor) {
+                density(k) = materialList[i].chargeDensity((double)phin(k), (double)phip(k)); //TODO: why here used to be k+1, then "carrierDensity[0]=carrierDensity[1]; nyList has +1 on the bottom"
+                // std::cout << (double)phin(k) << (double)phin(k) << std::endl;
+            } else if (typeList[i]==Dielectric) {
              };
             k++;
         };
     };
+
     return ( density );
 }
 
@@ -282,13 +288,14 @@ sp_mat Device1D::qCMatFunct(mat phin, mat phip, bool Equilibrum) {
     int k=0;
     for ( int i=0; i < materialList.size(); i++) {
         for ( int j=0; j < nyList[i]; j++) {
-            if (typeArray[i] == Semiconductor) {
-                cp(k, k) = materialList[i].quantumCapa((double)phin(k), (double)phip(k)); // why here used to be k+1, then "carrierDensity[0]=carrierDensity[1];"
-            } else if (typeArray[i]==Dielectric) {
+            if (typeList[i] == Semiconductor) {
+                cp(k + 1, k + 1) = materialList[i].quantumCapa((double)phin(k), (double)phip(k)); //TODO: why here used to be k+1, then "cp(0, 0) = cp(1, 1);"
+            } else if (typeList[i]==Dielectric) {
              };
             k++;
         };
     };
+
     return ( cp );
 }
 

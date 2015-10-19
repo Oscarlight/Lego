@@ -16,6 +16,7 @@ class Device1D : public Material {
 protected:
 	std::vector<Material> materialList;
 	std::vector<int> nyList;
+	std::vector<double> typeList;
 	std::vector<double> dieleArray; // dielectrics in y-direction: size: sumPoint + 1
 	std::vector<double> spacingArray; // spacing in y-direction: size: sumPoint + 1
 	std::vector<double> electronAffinityArray;

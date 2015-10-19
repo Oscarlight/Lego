@@ -75,7 +75,7 @@ double Material::holeDensity(double phip) {
 	switch (dimension) {
 	case 2:
 	{
-		holeDensity=gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
 	}
 	break;
 	case 3:

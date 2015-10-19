@@ -95,10 +95,13 @@ void Poisson1D::runPoisson1D(double vTolerance, double _chargeTolerance, double 
     	cDA = dev1D.chargeDensityArrayFunct(phin, setPhip(phin, Equilibrum), Equilibrum);
     	errCDA = abs(cDA - oldcDA).max();
     	oldcDA = cDA;
+
+    	// std::cout << cDA(51) << " "  << cDA(87) << std::endl;
     	mat error = - (dev1D.getMatrixC() * potential - ChargeQ/E0 * cDA  - bCArray);
     	sp_mat qCMat = ChargeQ/E0 * dev1D.qCMatFunct(phin, setPhip(phin, Equilibrum), Equilibrum);
     	sp_mat matrixC_plusCq = dev1D.getMatrixC() - qCMat;
     	mat deltaPotential = spsolve(matrixC_plusCq, error, "superlu");
+
     	/** spsolve was not recognized. solve by using full path in #include,
     	 *  then follow http://stackoverflow.com/questions/30494610/how-to-link-armadillo-with-eclipse
     	 *  then rebuild (in index)
@@ -107,7 +110,9 @@ void Poisson1D::runPoisson1D(double vTolerance, double _chargeTolerance, double 
     	errV = abs(deltaPotential).max();
     	numConvergenceStep++;
     	phin = potential - (dev1D.getEAArray() + fLnArray );
-    } while ((errV(0) > vTolerance) || (errCDA(0) > chargeTolerance));
+    } while ((errV(0) > vTolerance) || (errCDA(0) > chargeTolerance) || numConvergenceStep > 1E4);
+    if ( numConvergenceStep > 1E4)
+    	std::cerr << "Solution not found." << std::endl;
     phip = setPhip(phin, Equilibrum);
     condBand = potential - dev1D.getEAArray();
     valeBand = condBand - dev1D.getBGArray();

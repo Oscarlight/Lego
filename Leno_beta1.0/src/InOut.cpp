@@ -167,7 +167,7 @@ void InOut::storeIV(double Vtg, double Vbg, double Vds, std::vector<double> curr
 void InOut::writeBAandCharge(std::string fileName, std::vector<double> x, std::vector<double> cB, std::vector<double> vB, std::vector<double> fLn, std::vector<double> fLp, std::vector<double> chargeDensity) {
 	std::ofstream myfile;
 	myfile.open((fileName+".csv").c_str());
-	myfile << "Position(nm)" << ", " << "ConductionBand" << ", " << "ValenceBand" << ", " << "electronFermiLevel" << ", " << "holeFermiLevel" << ", " << "ChargeDensiy(1/cm2)" << "\n";
+	myfile << "Position(nm)" << ", " << "ConductionBand" << ", " << "ValenceBand" << ", " << "electronFermiLevel" << ", " << "holeFermiLevel" << ", " << "ChargeDensiy(1/cm3)" << "\n";
 	for (int i = 0; i < cB.size(); i++) {
 		// double to string method 1
 		std::ostringstream s1,s2,s3,s4,s5,s6;
