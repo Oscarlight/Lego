@@ -25,17 +25,20 @@ by Mingda Oscar Li (ml888@cornell.edu)
 	More compile and link info, see Makefile.
 
 3. How to use it
+
 	*** Current Release is only for Linus ***
-    1) Open terminal, go the same folder with Leno_beta1.0
-	2) Modify the device file and/or material file as you wish
-	3) Run Leno_beta1.0 -d yourDeviceFileName -m yourMaterialFileName
-	4) ( Good ) ? Stay_cool : Email ml888@cornell.edu for help
+
+        1. Open terminal, go the same folder with Leno_beta1.0
+	2. Modify the device file and/or material file as you wish
+	3. Run Leno_beta1.0 -d yourDeviceFileName -m yourMaterialFileName
+	4. ( Good ) ? Stay_cool : Email ml888@cornell.edu for help
 
 4. Class Tree:
+
 	MathFunct
-		Params
-			Material
-				Device1D
+		*Params
+			**Material
+				***Device1D
 					(Device2D)
 			Poisson1D
 				(Poisson2D)
