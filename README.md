@@ -27,26 +27,12 @@ by Mingda Oscar Li (ml888@cornell.edu)
 3. How to use it
 
 	*** Current Release is only for Linus ***
+		1. Open terminal, go the same folder with Leno_beta1.0
+		2. Modify the device file and/or material file as you wish
+		3. Run Leno_beta1.0 -d yourDeviceFileName -m yourMaterialFileName
+		4. ( Good ) ? Stay_cool : Email ml888@cornell.edu for help
 
-        1. Open terminal, go the same folder with Leno_beta1.0
-	2. Modify the device file and/or material file as you wish
-	3. Run Leno_beta1.0 -d yourDeviceFileName -m yourMaterialFileName
-	4. ( Good ) ? Stay_cool : Email ml888@cornell.edu for help
 
-4. Class Tree:
-
-	MathFunct
-		*Params
-			**Material
-				***Device1D
-					(Device2D)
-			Poisson1D
-				(Poisson2D)
-			Transport
-				Tunneling
-			ExtractData
-			InOut
-
-5. Reference:
+4. Reference:
 	>"Single particle transport in two-dimensional heterojunction interlayer tunneling field effect transistor" http://dx.doi.org/10.1063/1.4866076
 	>"Two-Dimensional Heterojunction Interlayer Tunneling Field Effect Transistors (Thin-TFETs)" DOI:10.1109/JEDS.2015.23906
