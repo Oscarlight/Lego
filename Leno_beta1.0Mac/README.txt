@@ -11,14 +11,14 @@ by Mingda Oscar Li (ml888@cornell.edu)
 		2) Tranport: 2D to 2D interlayer quantum tunneling current simulation.
 
 	/*** For Mac Version ***/
-	Because some linking problem, SuperLU is disable. So the speed is slower.
+	Because some linking problems, SuperLU is disable. So the speed is lower.
 	Also, for the time being, all plotting functions are disabled.
 
 2. How to use it
 	*** This executable release is for Mac OS X only  ***
-        1) Open terminal, go the same folder with Leno_beta1.0
-	2) Modify the device file and/or material file as you wish
-	3) Run ./Leno_beta1.0 -d yourDeviceFileName -m yourMaterialFileName
+        1) Open terminal, go the same folder with Leno_beta1.0_mac
+	2) Modify the device file and/or material file as you wish (normally you just need to change voltage ranges)
+	3) Run ./Leno_beta1.0_mac -d yourDeviceFileName -m yourMaterialFileName (e.g. ./Leno_beta1.0_mac -d deviceNType -m material)
 	4) ( Good ) ? Stay_cool : Email ml888@cornell.edu for help
 
 4. Class Tree:
