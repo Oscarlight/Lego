@@ -54,7 +54,7 @@
 
 [Plot]
 Plot_Band_Alignment = No /* Not recommend to put "Yes" when doing I-V, but you can */
-Plot_I-V = No		 /* Not recommend to put "Yes" when change more than one terminal, e.g. Vds and Vtg */	
+Plot_I-V = Yes		 /* Not recommend to put "Yes" when change more than one terminal, e.g. Vds and Vtg */	
 Save_Plots = No	         /* no working yet */
 
 [Save]
