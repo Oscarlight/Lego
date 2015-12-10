@@ -25,19 +25,34 @@ public:
 	// Boundary type
 	std::vector<int> topBTList, botBTList;
 	// workfunction
-	std::vector<int> topWFList, botWFList;
+	std::vector<double> topWFList, botWFList;
 
 	std::vector<double> blockLength;
 	std::vector<int> blockPoint;
+	std::vector<int> topGateArea;
 
 	std::vector<std::string> layerName;
 	std::vector<double> layerThickness;
 	std::vector<int> layerPoint;
+	std::vector<bool> connect2Drain;
+	std::vector<bool> connect2Source;
 
 	// bias
-	double vtgArray[3], vbgArray[3], vdsArray[3];
+	double vtgArray[3], vbgArray[3], vdsArray[3], vssArray[3];
+
+	// Poisson Convergence
+	double voltageErr;
+	double carrierConcenErr; // in cm^-3
+	double magicNum;
+
+	// Terminal connection
+	bool terminalConnect[3];
+
 	// material
 	std::map<std::string, std::vector<double>> matMap;
+
+
+
 public:
 	InOut2D();
 	virtual ~InOut2D();
@@ -48,6 +63,7 @@ public:
 
 	// write
 	void writeCB(std::string fileName, std::map<int, std::vector<std::vector<double> > > cBMap);
+	void writeCapaMap(std::string fileName, std::map<std::vector<double>, double> map);
 	static void printMatToText(const char* filename, mat matrix);
 };
 

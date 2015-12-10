@@ -90,7 +90,7 @@ void Run1D::runPoisson1D(int argc, char** argv){
     			fLn.at(1 + io.layerPoint[0] + 1 + io.layerPoint[2]) = - Vds;
     			p1D.setFLnArray(fLn);
     			p1D.setFLpArray(fLn); // in Equilibrum Fln = Flp
-    			p1D.runPoisson1D(0.001, 1E10, 1,  true);
+    			p1D.runPoisson1D(0.001, 1E10, 0.1,  true);
     			std::cout << "Poisson Finished." << std::endl;
 
     			// extract data

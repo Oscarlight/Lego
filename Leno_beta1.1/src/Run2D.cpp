@@ -50,6 +50,7 @@ std::map<std::string, Material> Run2D::readInput(int argc, char** argv) {
 		matLib.insert(std::pair<std::string, Material>(it->first, t));
 	}
 
+	std::cout << " ** material library is completed." << std::endl;
 	return ( matLib );
 }
 
@@ -65,7 +66,7 @@ Device2D Run2D::createDevice2D(int argc, char** argv) {
 		accu = accu + io2D.layerNumList[i]; // update accu
 	}
 
-	std::cout << "dev1DList is completed with size = " << dev1DList.size() << std::endl;
+	std::cout << " **** dev1DList is completed with size = " << dev1DList.size() << std::endl;
 
 	// construct device2D
 	dev2D.startWith_2D(dev1DList[0], io2D.blockLength[0], io2D.blockPoint[0], io2D.leftBT);
@@ -76,10 +77,16 @@ Device2D Run2D::createDevice2D(int argc, char** argv) {
 	dev2D.endWith_2D(dev1DList[io2D.blockNum - 1], io2D.blockLength[io2D.blockNum - 1],
 			io2D.blockPoint[io2D.blockNum - 1], io2D.rightBT);
 	dev2D.matrixDiff_2D();
+
+	std::cout << " **** Device2D is completed." << std::endl;
 	return ( dev2D );
 }
 
-std::vector<ExtractData> Run2D::getBand2D() {
+std::vector<ExtractData> Run2D::getData2D() {
+	return (data2DPerBias);
+}
+
+std::vector< std::vector< std::vector<double> > > Run2D::getBand2D() {
 	return (band2DPerBias);
 }
 
@@ -109,36 +116,73 @@ void Run2D::runPoisson2D(int argc, char** argv) {
     std::vector<double> vtgArray =p2D.rangeByStep(io2D.vtgArray[0], io2D.vtgArray[1], io2D.vtgArray[2]);
     std::vector<double> vbgArray =p2D.rangeByStep(io2D.vbgArray[0], io2D.vbgArray[1], io2D.vbgArray[2]);
     std::vector<double> vdsArray =p2D.rangeByStep(io2D.vdsArray[0], io2D.vdsArray[1], io2D.vdsArray[2]);
+    std::vector<double> vssArray =p2D.rangeByStep(io2D.vssArray[0], io2D.vssArray[1], io2D.vssArray[2]);
 
+    std::vector<int> sdIndex = p2D.sourceDrain2DLayerIndex(io2D.connect2Drain, io2D.connect2Source);
+    std::cout << "drain index: " << sdIndex[0] << " , source index: " << sdIndex[1] << std::endl;
+
+    std::cout << " ***** Poisson2D is started." << std::endl;
+    Capacitance capa;
     for (double Vbg : vbgArray) {
-    	for (double Vds : vdsArray) {
-    		for (double Vtg : vtgArray) {
-    			std::cout << "Vbg = " << Vbg << " V; " << "Vtg = " << Vtg << " V; " << "Vds = " << Vds << " V;" << std::endl;
+    	for (double Vss : vssArray) {
+    		for (double Vds : vdsArray) {
+    			for (double Vtg : vtgArray) {
 
-    			p2D.setGateBias_2D(io2D.gateBiasMap(Vtg, Vbg));
+    				if (io2D.terminalConnect[0] == true)  // Vbg = Vtg always
+    					Vbg = Vtg;
 
-    			std::vector<double> fLnZero(dev2D.getUnitSize(), 0);   // 0 for one slice
-    			std::vector<double> fLn(dev2D.getUnitSize(), 0);   // 0 for one slice
-    			fLn.at(1 + io2D.layerPoint[io2D.layerNumList[1]] + 1 + io2D.layerPoint[io2D.layerNumList[1]+2]) = - Vds;
-    			std::map<int, std::vector<double>> fLnMap;
-    			fLnMap.insert(std::pair<int, std::vector<double>>(0, fLnZero));
-    			fLnMap.insert(std::pair<int, std::vector<double>>(1, fLn));
-    			fLnMap.insert(std::pair<int, std::vector<double>>(2, fLn));
-    			fLnMap.insert(std::pair<int, std::vector<double>>(3, fLn));
-    			p2D.setFLnArray_2D(fLnMap);
-    			p2D.setFLpArray_2D(fLnMap); //
-    			p2D.runPoisson2D(0.001, 1E10, 1,  true);
-    			std::cout << "2D Poisson Finished." << std::endl;
+    				std::cout << "Vbg = " << Vbg << " V; " << "Vtg = " << Vtg << " V; "
+    						<< "Vds = " << Vds << " V; " << "Vss = " << Vss << std::endl;
 
-    			// Extract Data
-    			ExtractData data;
-    			data.bandAndCharge2D(p2D, dev2D);
+    				p2D.setGateBias_2D(io2D.gateBiasMap(Vtg, Vbg));
 
-    			// Store in InOut2D
-    			band2DPerBias.push_back(data);
+//        			std::vector<double> fLnZero(dev2D.getUnitSize(), 0);   // 0 for one slice
+//        			std::vector<double> fLn(dev2D.getUnitSize(), 0);   // 0 for one slice
+//        			fLn.at(1 + io2D.layerPoint[io2D.layerNumList[1]] + 1 + io2D.layerPoint[io2D.layerNumList[1]+2]) = - Vds;
+//        			std::map<int, std::vector<double>> fLnMap;
+//        			fLnMap.insert(std::pair<int, std::vector<double>>(0, fLnZero));
+//        			fLnMap.insert(std::pair<int, std::vector<double>>(1, fLn));
+//        			fLnMap.insert(std::pair<int, std::vector<double>>(2, fLn));
+//        			fLnMap.insert(std::pair<int, std::vector<double>>(3, fLn));
+//        			p2D.setFLnArray_2D(fLnMap);
+//        			p2D.setFLpArray_2D(fLnMap); //
+
+    				/* -Vds: Caution: the negative sign */
+    				p2D.setFLnArray_2D(p2D.createFermiLevelMap(io2D.connect2Drain, -Vds, io2D.connect2Source, Vss));
+    				p2D.setFLpArray_2D(p2D.createFermiLevelMap(io2D.connect2Drain, -Vds, io2D.connect2Source, Vss)); // when equilibrum, Flp = Fln
+
+    				p2D.runPoisson2D(io2D.voltageErr, io2D.carrierConcenErr, io2D.magicNum,  true);
+    				std::cout << "2D Poisson Finished." << std::endl;
+
+    				// Extract Data
+    				ExtractData data;
+    				data.bandAndCharge2D(p2D, dev2D); // first read into band info
+
+    				// Store the bandAlignment
+    				std::vector< std::vector<double> > tempBand;
+    				tempBand.push_back(data.mapRowSlide(data.cBMap, sdIndex[0])); // top for ThinTFET
+    				tempBand.push_back(data.mapRowSlide(data.vBMap, sdIndex[0]));
+    				if (sdIndex[0] != sdIndex[1]) { // source and drain are not at the same layer
+    					tempBand.push_back(data.mapRowSlide(data.cBMap, sdIndex[1])); // bottom for ThinTFET
+    					tempBand.push_back(data.mapRowSlide(data.vBMap, sdIndex[1]));
+    				}
+
+    				band2DPerBias.push_back(tempBand);
 
 
+    				// read top gate charge into capa for capacitance calculation
+    				capa.readCharge(Vtg, Vbg, Vds, Vss, data.topGateCharge2D(dev2D, io2D.topGateArea)); // read in all the data needed for capa
+
+    			}
     		}
     	}
+    	if (io2D.terminalConnect[0] == true)  // Vbg = Vtg always
+    		break;
     }
+
+    capa.calCggCgsCgd(vtgArray, vbgArray, vdsArray, vssArray, io2D.terminalConnect); // calculate capacitance
+
+    io2D.writeCapaMap(io2D.devName+"_"+io2D.userCom+"_Cgs", capa.getCgsMap());
+    io2D.writeCapaMap(io2D.devName+"_"+io2D.userCom+"_Cgd", capa.getCgdMap());
+    io2D.writeCapaMap(io2D.devName+"_"+io2D.userCom+"_Cgg", capa.getCggMap());
 }

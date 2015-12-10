@@ -57,7 +57,7 @@
 	Electron_Affinity = 4
 	Bandgap = 1.3
 	Dimension = 2
-	Monolayer_Thickness = 0.01 /* ignore it for 3D material */
+	Monolayer_Thickness = 0.5 /* ignore it for 3D material */
 	/* ignore the following for Dielectric type */
 	Nd = 0 
 	Na = 0 
@@ -73,7 +73,7 @@
 	Electron_Affinity = 5.1
 	Bandgap = 1
 	Dimension = 2
-	Monolayer_Thickness = 0.01 /* ignore it for 3D material */
+	Monolayer_Thickness = 0.5 /* ignore it for 3D material */
 	/* ignore the following for Dielectric type */
 	Nd = 0 
 	Na = 0 

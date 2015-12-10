@@ -1,6 +1,5 @@
 /* Material File */
 
-
 [Air]
 	Type = Dielectric
 	er_y = 1	/* relative dielectric constant in vertical direction */
@@ -17,6 +16,21 @@
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
 
+[Air_2D]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 1
+	Electron_Affinity = 0
+	Bandgap = 10
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 0 
+	mc_eff = 0
+	mv_eff = 0
+	gv_of_Ec = 0
+	gv_of_Ev = 0
 
 [SiO2]
 	Type = Dielectric
@@ -52,7 +66,7 @@
 
 [WSe2_2D]
 	Type = Semiconductor
-	er_y = 5
+	er_y = 1	/* real er_y ~ 6-7, with Monolayer_Thickness = 0.1, effective thickness = 0.6-0.7 nm*/
 	er_x = 7
 	Electron_Affinity = 4
 	Bandgap = 1.3
@@ -68,7 +82,7 @@
 
 [SnSe2_2D]
 	Type = Semiconductor
-	er_y = 5
+	er_y = 1
 	er_x = 7
 	Electron_Affinity = 5.1
 	Bandgap = 1
@@ -77,6 +91,70 @@
 	/* ignore the following for Dielectric type */
 	Nd = 0 
 	Na = 0 
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+
+[WSe2_2D_n]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 4
+	Bandgap = 1.3
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 2 
+	Na = 0 
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+
+[SnSe2_2D_n]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 5.1
+	Bandgap = 1
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 2 
+	Na = 0 
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+
+[WSe2_2D_p]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 4
+	Bandgap = 1.3
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 2 /* 1/nm^3  -> 1E21 1/cm^3 */ 
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+
+[SnSe2_2D_p]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 5.1
+	Bandgap = 1
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 /* 1/nm^3 */
+	Na = 2 
 	mc_eff = 0.3
 	mv_eff = 0.4
 	gv_of_Ec = 2

@@ -133,8 +133,9 @@ void Device1D::endWith(Material m, double _t, int _n, int _topBoundaryType) {
 	spacingArray.push_back(spacingArray.back());
 	// total # of read points
 	sumPoint = dieleArray.size() - 1;
-	std::cout << "Device1D is constructed with total points = " << sumPoint << std::endl;
+	std::cout << " *** Device1D is constructed with total points = " << sumPoint << std::endl;
 }
+
 
 
 mat Device1D::vec2Mat(std::vector<double> vec) {
@@ -184,7 +185,9 @@ void Device1D::matrixDiff() {
 }
 
 
-
+std::vector<Material> Device1D::getMaterialList() {
+	return ( materialList );
+}
 
 mat Device1D::getEAArray() {
 	return ( vec2Mat(electronAffinityArray) );

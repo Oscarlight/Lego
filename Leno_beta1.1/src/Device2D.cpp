@@ -214,8 +214,9 @@ mat Device2D::getPpIArray_2D() {
 //std::vector<double> Device2D::getSpacingY_2D() {
 //}
 //
-//std::vector<double> Device2D::getSpacingX_2D() {
-//}
+std::vector<double> Device2D::getSpacingX_2D() {
+	return (spacingArrayIP);
+}
 
 std::vector<int> Device2D::getNxList() {
 	return ( nxList );

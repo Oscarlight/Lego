@@ -42,7 +42,7 @@ public:
 
 public:
 	// System const:
-	double LARGE = 1E100; // a large number 1E100
+	double LARGE = 1E10; // a large number, used to be too large (1E100) but cause matrix to be singular
 	int    Dirichlet=1;
 	int    Neumann=2;
 	int    Semiconductor=3;

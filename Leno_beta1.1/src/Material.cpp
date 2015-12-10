@@ -23,8 +23,8 @@ Material::Material(int _index, int _type, const char *pname, double _dielectricC
 
 	    	// Unit convert from natural unit to Lego unit
 	    	t2D = _t2D * cmNL(1E-7); // origin: nm
-	    	Nd = _Nd * 1 / ( cmNL(1) * cmNL(1) * cmNL(1) ); // origin: cm-3
-	    	Na = _Na * 1 / ( cmNL(1) * cmNL(1) * cmNL(1) );
+	    	Nd = _Nd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
+	    	Na = _Na * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
 	        mcEff=_mcEff*m0;
 	        mvEff=_mvEff*m0;
 }

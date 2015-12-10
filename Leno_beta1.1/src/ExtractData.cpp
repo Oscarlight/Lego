@@ -19,6 +19,35 @@ bool ExtractData::bandAndCharge2D(Poisson2D p2D, Device2D dev2D) {
 	cBMap = array2Map(p2D.getCondBand_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	vBMap = array2Map(p2D.getValeBand_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	chargeDensityMap = array2Map(p2D.getCDA_2D(), dev2D.getUnitSize(), dev2D.getNxList());
+	spacingXMap = array2Map(dev2D.getSpacingX_2D(), dev2D.getUnitSize(), dev2D.getNxList());
+}
+
+
+/** return C/cm not charge density */
+double ExtractData::topGateCharge2D(Device2D dev2D, std::vector<int> gateArea) {
+	double sumCharge = 0;
+	// std::cout << " Enter top gate charge 2D" << std::endl;
+	for (int i : gateArea) {
+		// std::cout << " gateArea = " << i <<  std::endl;
+		std::vector<std::vector<double>> cB, spacingX;
+		cB = cBMap.at(i);
+		spacingX = spacingXMap.at(i);
+		double dieleY = dev2D.getDev1DList()[i].getMaterialList().back().dieleY;
+		double gateThick = dev2D.getDev1DList()[i].getNyList().back() * dev2D.getDev1DList()[i].getSpacingY().back() * cmLN(1); // in cm
+		double gateCap = dieleY * ( E0 * cLN(1)/cmLN(1)) / gateThick;
+		// charge density (1/cm^2) at each points
+		for (int j = 0; j < cB.size(); j++) {
+			// std::cout << cB[j].size() - dev2D.getDev1DList()[i].getNyList().back() << ", " << cB[j].size() << std::endl;
+			// std::cout << cB[j][ cB[j].size() - dev2D.getDev1DList()[i].getNyList().back() ] << ", " << cB[j].back() << std::endl;
+			double vOverTopOx = cB[j][ cB[j].size() - dev2D.getDev1DList()[i].getNyList().back() ] - cB[j].back();
+			// std::cout << "vOverTopOx = " << vOverTopOx << std::endl;
+			double tempCharge = gateCap * vOverTopOx; // C/cm^2
+			// std::cout << gateCap << ", " << vOverTopOx << ", " << tempCharge << std::endl;
+			topGateChargeArray.push_back(tempCharge);
+			sumCharge += tempCharge * ( spacingX[j].back() * cmLN(1) ); // C/cm
+		}
+	}
+	return ( sumCharge );
 }
 
 std::vector<double> ExtractData::mat2Vec(mat m) {
@@ -48,7 +77,9 @@ bool ExtractData::bandAndCharge(Poisson1D p1D, Device1D dev1D) {
 	return (bandAndChargeDone = true);
 }
 
-
+/**
+ * Run it after bandAndCharge2D
+ */
 int ExtractData::bASemiOnly() {
 	if( bandAndChargeDone != true)
 		std::cerr << "Error: bandAlignment needs to be run first." << std::endl;
@@ -83,5 +114,23 @@ std::map<int, std::vector<std::vector<double> > > ExtractData::array2Map(mat a, 
 		}
 		map.insert(std::pair<int, std::vector<std::vector<double> >>(i, block));
 	}
-	return map;
+	return ( map );
+}
+
+// row slice, i.e. slice in x-direction
+std::vector<double> ExtractData::mapRowSlide(std::map<int, std::vector<std::vector<double> > > map, int rowIndex) {
+	std::vector<double> row;
+	int accu = 0;
+	for (int i = 0; i < map.size(); i++) { // per block
+		std::vector<std::vector<double> > block = map.at(i);
+		for (int j = 0; j < block.size(); j++) { // per slice in block
+			std::vector<double> slice = block[j];
+			row.push_back(slice[rowIndex]);
+		}
+	}
+	return ( row );
+}
+
+double ExtractData::arrayPoint(std::vector<double> array, int pointIndex) {
+	return ( array[pointIndex] );
 }

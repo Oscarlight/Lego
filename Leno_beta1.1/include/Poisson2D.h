@@ -62,6 +62,11 @@ public:
 	mat getPhip_2D();
 	mat getCDA_2D();
 
+	// Helpers
+	std::map<int, std::vector<double>> createFermiLevelMap(std::vector<bool> connect2Drain, double Vds, std::vector<bool> connect2Source, double Vss);
+	// assume each 1D block has the same y-direction meshing
+	// TODO: it is not generalized yet, only good for pin-TFET or Thin-TFET
+	std::vector<int> sourceDrain2DLayerIndex(std::vector<bool> connect2Drain, std::vector<bool> connect2Source);
 
 protected:
 	mat bCArrayFunct_2D(Device2D dev2D, std::map<int, std::array<double, 4>> biasMap);

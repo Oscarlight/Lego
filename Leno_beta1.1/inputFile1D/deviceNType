@@ -2,7 +2,7 @@
 
 [Device1D]
 	Device_Name = n-Thin_TFET
-	User_Comment = test        /* One word comment */
+	User_Comment = realisticMeshTest        /* One word comment */
 	Layer_Number = 5           /* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]       

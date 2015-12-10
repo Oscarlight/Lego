@@ -53,7 +53,7 @@ public:
 	mat getPnIArray_2D(); // get phinInitArray in mat type
 	mat getPpIArray_2D(); // get phipInitArray in mat type
 //	std::vector<double> getSpacingY_2D(); // get spacingArray
-//	std::vector<double> getSpacingX_2D(); // get spacingArray
+	std::vector<double> getSpacingX_2D(); // get spacingArray
 	int getSumPoint_2D(); // get sumPoint
 	std::vector<int> getNxList(); // getNxList and getUnitSize give all the info of 2D mesh
 	int getUnitSize();

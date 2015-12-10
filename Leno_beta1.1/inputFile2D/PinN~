@@ -1,0 +1,150 @@
+/* Device File */
+
+[Device2D]
+	Device_Name = n-pin-TFET
+	User_Comment = 12_10        /* One word comment */
+	Block_Number = 4            /* block number */ 
+
+/* Blocks */
+[Block1] /* source Lead */
+	Layer_Number = 3
+	Length = 5 /* nm */
+	Nx = 50
+	Bottom_Boundary_Type = Neumann
+        Top_Boundary_Type = Neumann
+
+[Block2] /* channel */
+	Layer_Number = 3
+	Length = 8 /* nm */
+	Nx = 80
+	Bottom_Boundary_Type = Dirichlet   
+	Bottom_Gate_Workfunction = 4.13    
+	Top_Boundary_Type = Dirichlet      
+	Top_Gate_Workfunction = 4.13      
+
+[Block3] /* undercut */
+	Layer_Number = 3
+	Length = 2 
+	Nx = 20
+	Bottom_Boundary_Type = Neumann
+        Top_Boundary_Type = Neumann
+
+[Block4] /* drain lead */
+	Layer_Number = 3
+	Length = 5 /* nm */
+	Nx = 50
+	Bottom_Boundary_Type = Neumann
+        Top_Boundary_Type = Neumann
+
+/* Layers for Block1 */
+[Layer11] /* bottom Air fill */
+	Material = Air
+	Thickness = 1  /* nm */
+	Ny = 20 /* points in y direction (thickness) */
+	Left_Boundary_Type = Neumann
+
+[Layer12] /* Bottom 2D Layer */
+	Material = WSe2_2D_p
+	Thickness = 0
+	Ny = 0
+	Left_Boundary_Type = Neumann /* Neumann for Ohmic contact */
+	/* Source or Drain */
+	ConnectTo = Source 	     /* Apply Vss here, refer to ground */
+
+[Layer13] /* top Air fill */
+	Material = Air
+	Thickness = 1 
+	Ny = 20 
+	Left_Boundary_Type = Neumann
+
+/* Layers for Block2 */
+[Layer21] /* Back Gate Oxide */
+	Material = SiO2
+	Thickness = 1  /* nm */
+	Ny = 20 /* points in y direction (thickness) */
+
+[Layer22] /* Bottom 2D Layer */
+	Material = WSe2_2D
+	Thickness = 0
+	Ny = 0
+	/* Source or Drain */
+	ConnectTo = Drain 	     /* Apply Vds here, refer to ground */
+
+[Layer23] /* Top Gate Oxide */
+	Material = SiO2
+	Thickness = 1
+	Ny = 20
+		
+/* Layers for Block3 */
+[Layer31] /* Back Gate Oxide */
+	Material = SiO2
+	Thickness = 1  /* nm */
+	Ny = 20 /* points in y direction (thickness) */
+
+[Layer32] /* Bottom 2D Layer */
+	Material = WSe2_2D
+	Thickness = 0
+	Ny = 0
+	/* Source or Drain */
+	ConnectTo = Drain 	     /* Apply Vds here, refer to ground */
+
+[Layer33] /* Top Gate Oxide */
+	Material = SiO2
+	Thickness = 1
+	Ny = 20
+
+
+/* Layers for Block4 */
+[Layer41] /* bottom Air fill */
+	Material = Air
+	Thickness = 1  /* nm */
+	Ny = 20 /* points in y direction (thickness) */
+	Right_Boundary_Type = Neumann
+
+[Layer42] /* Top 2D Layer */
+	Material = WSe2_2D_n
+	Thickness = 0
+	Ny = 0
+	Right_Boundary_Type = Neumann /* Neumann for Ohmic contact */
+	/* Source or Drain */
+	ConnectTo = Drain 	     /* Apply Vds here, refer to ground */
+
+[Layer43] /* top Air fill */
+	Material = Air
+	Thickness = 1 
+	Ny = 20
+	Right_Boundary_Type = Neumann
+
+/* all unit is V */
+/* From small value to large value */
+[Vtg] 
+	Vtg_From = 0
+	Vtg_To =   0.4
+	Vtg_Step = 0.02
+[Vbg]
+	Vbg_From = 0
+	Vbg_To = 0
+	Vbg_Step = 0
+[Vds]
+	Vds_From = 0
+	Vds_To =   0.4
+	Vds_Step = 0.02
+
+/* Vss is existed for calcualting Cgs 
+therefore, only 2 value needed */
+[Vss]
+	Vss_From = 0
+	Vss_To =   0.01
+	Vss_Step = 0.01
+
+[PoissonConvergence]
+	Voltage_Error = 0.0001 /* V */
+	Carrier_Density_Error = 1 /* 1E10 cm^-3 */
+	Magic_Number = 0.4 
+
+[ConnectTerminal]
+	TopGate_and_BackGate = No  /* the only one is working now */
+	TopGate_and_Drain = No
+	BackGate_and_Drain = No
+	 
+

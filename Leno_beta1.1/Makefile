@@ -22,7 +22,8 @@ BINDIR = ./bin/
 
 # Compiler details
 CC = g++ 
-CFLAGS = -std=c++11 -O2 # add -O2, delete -g
+# CFLAGS = -std=c++11 -O2 # add -O2, delete -g
+CFLAGS = -g -std=c++11
 # The location of include files of various libraries
 # Only work with ".lib/...", not "lib/...", why?
 ARMA_INCLUDE = .lib/armadillo-6.100.0/include 
@@ -49,8 +50,8 @@ CU_O = lib/cubature-1.0.2/pcubature.o
 
 all : $(target)
 
-$(target): $(OBJ)  MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o $(CU_O)
-	$(CC) $(CFLAGS) $(OBJ) MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o $(CU_O) -o $(target)  $(MYLIBS)
+$(target): $(OBJ)  MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o Capacitance.o $(CU_O)
+	$(CC) $(CFLAGS) $(OBJ) MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o Capacitance.o $(CU_O) -o $(target)  $(MYLIBS)
 	
 $(OBJ) : $(SRCDIR)$(SRC)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)$(SRC)
@@ -83,6 +84,8 @@ Run1D.o :     $(SRCDIR)Run1D.cpp         $(INCLUDEDIR)Run1D.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Run1D.cpp
 Run2D.o :     $(SRCDIR)Run2D.cpp         $(INCLUDEDIR)Run2D.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Run2D.cpp
+Capacitance.o : $(SRCDIR)Capacitance.cpp $(INCLUDEDIR)Capacitance.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Capacitance.cpp
 
 .phony : clean
 

@@ -8,15 +8,15 @@
 /* Blocks */
 [Block1] /* source Lead */
 	Layer_Number = 3
-	Length = 10 /* nm */
-	Nx = 10
+	Length = 5 /* nm */
+	Nx = 50
 	Bottom_Boundary_Type = Neumann
         Top_Boundary_Type = Neumann
 
 [Block2] /* channel */
 	Layer_Number = 5
-	Length = 15 /* nm */
-	Nx = 15
+	Length = 8 /* nm */
+	Nx = 80
 	Bottom_Boundary_Type = Dirichlet   
 	Bottom_Gate_Workfunction = 5.65    
 	Top_Boundary_Type = Dirichlet      
@@ -25,15 +25,15 @@
 [Block3] /* undercut */
 	Layer_Number = 4
 	Length = 2 
-	Nx = 2
+	Nx = 20
 	Bottom_Boundary_Type = Neumann
 	Top_Boundary_Type = Dirichlet
 	Top_Gate_Workfunction = 5.05
 
 [Block4] /* drain lead */
 	Layer_Number = 3
-	Length = 10 /* nm */
-	Nx = 10
+	Length = 5 /* nm */
+	Nx = 50
 	Bottom_Boundary_Type = Neumann
         Top_Boundary_Type = Neumann
 
@@ -41,7 +41,7 @@
 [Layer11] /* bottom Air fill */
 	Material = Air
 	Thickness = 1  /* nm */
-	Ny = 10 /* points in y direction (thickness) */
+	Ny = 20 /* points in y direction (thickness) */
 	Left_Boundary_Type = Neumann
 
 [Layer12] /* Bottom 2D Layer */
@@ -53,14 +53,14 @@
 [Layer13] /* top Air fill */
 	Material = Air
 	Thickness = 1.4 
-	Ny = 14 
+	Ny = 28 
 	Left_Boundary_Type = Neumann
 
 /* Layers for Block2 */
 [Layer21] /* Back Gate Oxide */
 	Material = SiO2
 	Thickness = 1  /* nm */
-	Ny = 10 /* points in y direction (thickness) */
+	Ny = 20 /* points in y direction (thickness) */
 
 [Layer22] /* Bottom 2D Layer */
 	Material = WSe2_2D
@@ -69,8 +69,8 @@
 
 [Layer23] /* van der Waals gap */
 	Material = vdWGap
-	Thickness = 0.3
-	Ny = 3
+	Thickness = 0.35
+	Ny = 7
 
 [Layer24] /* Top 2D Layer */
 	Material = SnSe2_2D
@@ -80,19 +80,19 @@
 [Layer25] /* Top Gate Oxide */
 	Material = SiO2
 	Thickness = 1
-	Ny = 10
+	Ny = 20
 		
 /* Layers for Block3 */
 [Layer31] /* Back Air Fill */
 	Material = Air
-	Thickness = 1.1  /* nm */
-	Ny = 11 /* points in y direction (thickness) */
+	Thickness = 1.05  /* nm */
+	Ny = 21 /* points in y direction (thickness) */
 
 
 [Layer32] /* van der Waals gap */
 	Material = vdWGap
-	Thickness = 0.3
-	Ny = 3
+	Thickness = 0.35
+	Ny = 7
 
 [Layer33] /* Top 2D Layer */
 	Material = SnSe2_2D
@@ -102,13 +102,13 @@
 [Layer34] /* Top Gate Oxide */
 	Material = SiO2
 	Thickness = 1
-	Ny = 10
+	Ny = 20
 
 /* Layers for Block4 */
 [Layer41] /* bottom Air fill */
 	Material = Air
 	Thickness = 1.4  /* nm */
-	Ny = 14 /* points in y direction (thickness) */
+	Ny = 28 /* points in y direction (thickness) */
 	Right_Boundary_Type = Neumann
 
 [Layer42] /* Top 2D Layer */
@@ -120,7 +120,7 @@
 [Layer43] /* top Air fill */
 	Material = Air
 	Thickness = 1 
-	Ny = 10
+	Ny = 20
 	Right_Boundary_Type = Neumann
 
 /* all unit is V */
@@ -128,7 +128,7 @@
 [Vtg] 
 	Vtg_From = 0
 	Vtg_To = 0.4
-	Vtg_Step = 0.02
+	Vtg_Step = 0.05
 [Vbg]
 	Vbg_From = 0
 	Vbg_To = 0
@@ -136,7 +136,7 @@
 [Vds]
 	Vds_From = 0.4
 	Vds_To = 0.4
-	Vds_Step = 0
+	Vds_Step = 0.05
 
 
 

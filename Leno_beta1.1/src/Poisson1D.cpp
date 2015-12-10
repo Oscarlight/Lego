@@ -111,6 +111,12 @@ void Poisson1D::runPoisson1D(double vTolerance, double _chargeTolerance, double 
 
     	sp_mat qCMat = ChargeQ/E0 * dev1D.qCMatFunct(phin, setPhip(phin, Equilibrum), Equilibrum);
     	sp_mat matrixC_plusCq = dev1D.getMatrixC() - qCMat;
+
+    	/** TODO: debug the matrix
+    	 */
+    	// mat matrixC_plusCq_dense(matrixC_plusCq);
+    	// mat deltaPotential = solve(matrixC_plusCq_dense, error);
+
     	mat deltaPotential = spsolve(matrixC_plusCq, error, "superlu");
         /** spsolve(): could not solve system
          *  	t2D in material file must be equal to the spacingY!
@@ -147,11 +153,11 @@ std::vector<double> Poisson1D::rangeByNum(double begin, double end, double numbe
 std::vector<double> Poisson1D::rangeByStep(double begin, double end, double step) {
 	std::vector<double> v;
 	// Preventing double precision error (< 10000)
-	for (double i = begin; i*10000 < ceil((end)*10000); i+=step){
-		// std::cout << i*10000 << ceil((end-step)*10000) << std::endl;
-		v.push_back(i);
-	}
-	v.push_back(end);
+	do {
+		v.push_back(begin);
+		begin += step;
+	} while(begin * 1E5 < ceil((end + step)*1E5));
+	// v.push_back(end);
 	return (v);
 }
 

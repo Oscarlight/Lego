@@ -42,6 +42,7 @@ public:
 	void matrixDiff();
 
 	// getter function
+	std::vector<Material> getMaterialList();
 	mat getEAArray(); // get electronAffinityArray in mat type
 	mat getBGArray(); // get bandGapArray in mat type
 	std::vector<double> getEAArrayVec(); // get electronAffinityArray in vector type

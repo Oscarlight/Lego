@@ -17,6 +17,60 @@ Poisson2D::Poisson2D(Device2D _dev2D) {
 Poisson2D::~Poisson2D() {
 }
 
+std::map<int, std::vector<double>> Poisson2D::createFermiLevelMap(std::vector<bool> connect2Drain, double Vds, std::vector<bool> connect2Source, double Vss) {
+	std::map<int, std::vector<double>> fLMap;
+	int accu = 0;
+	for (int i = 0; i < dev2D.getNxList().size(); i++) { // index of 1D block
+		std::vector<double> fL(dev2D.getUnitSize(), 0);   // initalize fermi level array in y-direction
+
+		int interAccu = 0;
+		for (int j = 0; j < dev2D.getDev1DList()[i].getNyList().size(); j++) { // index of each layer
+			if (connect2Drain[accu + j] == true) {
+				for (int k = 0; k < dev2D.getDev1DList()[i].getNyList()[j]; k++ ) { // index of each point in a layer
+					fL[interAccu + k] = Vds;
+				}
+			}
+			if (connect2Source[accu + j] == true) {
+				for (int k = 0; k < dev2D.getDev1DList()[i].getNyList()[j]; k++ ) { // index of each point in a layer
+					fL[interAccu + k] = Vss;
+				}
+			}
+			interAccu += dev2D.getDev1DList()[i].getNyList()[j];
+		}
+		fLMap.insert(std::pair<int, std::vector<double>>(i, fL));
+		accu += dev2D.getDev1DList()[i].getNyList().size();
+	}
+	return (fLMap);
+}
+
+// TODO: a temporal solution
+std::vector<int> Poisson2D::sourceDrain2DLayerIndex(std::vector<bool> connect2Drain, std::vector<bool> connect2Source) {
+	std::vector<int> indexArray(2, 0); // the first is drain layer, the second is source layer
+	int accu = 0;
+	for (int i = 0; i < dev2D.getNxList().size(); i++) { // index of 1D block
+		int interAccu = 0;
+		for (int j = 0; j < dev2D.getDev1DList()[i].getNyList().size(); j++) { // index of each layer
+
+			if (connect2Drain[accu + j] == true) {
+				for (int k = 0; k < dev2D.getDev1DList()[i].getNyList()[j]; k++ ) { // index of each point in a layer
+					indexArray[0] = interAccu + k;
+					// std::cout << "Flag2" << interAccu + k << std::endl;
+				}
+			}
+			if (connect2Source[accu + j] == true) {
+				for (int k = 0; k < dev2D.getDev1DList()[i].getNyList()[j]; k++ ) { // index of each point in a layer
+					indexArray[1] = interAccu + k;
+				}
+			}
+			interAccu += dev2D.getDev1DList()[i].getNyList()[j];
+		}
+		accu += dev2D.getDev1DList()[i].getNyList().size();
+	}
+	// std::cout << "Flag1" << std::endl;
+	// std::cout << indexArray[0] << indexArray[1] << std::endl;
+	return (indexArray);
+}
+
 void Poisson2D::setFLnArray_2D(std::map<int, std::vector<double>> fLnMap) {
 	fLnArray = zeros(dev2D.getSumPoint_2D());
 	// validating
@@ -130,31 +184,30 @@ void Poisson2D::runPoisson2D(double vTolerance, double _chargeTolerance, double 
     	cDA = dev2D.chargeDensityArrayFunct_2D(phin, setPhip_2D(phin, Equilibrum), Equilibrum);
     	errCDA = abs(cDA - oldcDA).max();
     	oldcDA = cDA;
-//    	 std::cout << cDA << std::endl;
+//    	std::cout << "--- 1 --- " << std::endl;
     	// std::cout << dev2D.getMatrixC_2D().size() << ", " << potential.size() << ", " << cDA.size() << ", " << bCArray.size() << std::endl;
     	mat error = - (dev2D.getMatrixC_2D() * potential - ChargeQ/E0 * cDA  - bCArray);
 //    	 std::cout << error << std::endl;
+//    	std::cout << "--- 2 --- " << std::endl;
     	sp_mat qCMat = ChargeQ/E0 * dev2D.qCMatFunct_2D(phin, setPhip_2D(phin, Equilibrum), Equilibrum);
 //    	 std::cout << qCMat << std::endl;
+//    	std::cout << "--- 3 --- " << std::endl;
     	sp_mat matrixC_plusCq = dev2D.getMatrixC_2D() - qCMat; // TODO: all use 2D version, use Private field help avoid errors!
     	mat deltaPotential = spsolve(matrixC_plusCq, error, "superlu");
 
-    	/** spsolve was not recognized. solve by using full path in #include,
-    	 *  then follow http://stackoverflow.com/questions/30494610/how-to-link-armadillo-with-eclipse
-    	 *  then rebuild (in index)
-    	 */
-
 //    	std::cout << phin << std::endl;
+//     	std::cout << "--- 4 --- " << std::endl;
 
 		potential += magicNumber * deltaPotential;
     	errV = abs(deltaPotential).max();
     	numConvergenceStep++;
     	phin = potential - (dev2D.getEAArray_2D() + fLnArray );
 
-    	// std::cout << errV(0) << std::endl;
+//    	std::cout << errV(0) << std::endl;
+//    	std::cout << errCDA(0) << std::endl;
 
-    } while ((errV(0) > vTolerance) || (errCDA(0) > chargeTolerance) || numConvergenceStep < 1E4);
-    if ( numConvergenceStep > 1E4)
+    } while ( ( (errV(0) > vTolerance) || (errCDA(0) > chargeTolerance) ) && numConvergenceStep < 1E4); //
+    if ( numConvergenceStep >= 1E4)
     	std::cerr << "+++++ Solution not found: convergence step over 1E4 +++++" << std::endl;
     phip = setPhip_2D(phin, Equilibrum);
     condBand = potential - dev2D.getEAArray_2D();

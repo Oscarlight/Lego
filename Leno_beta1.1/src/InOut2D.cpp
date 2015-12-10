@@ -45,6 +45,7 @@ void InOut2D::readDevice2D(std::string filename) {
 		if (ifile("Top_Boundary_Type", "") == "Dirichlet" ) {
 			topBTList.push_back(Dirichlet);
 			topWFList.push_back(ifile("Top_Gate_Workfunction", 0.0));
+			topGateArea.push_back(i-1); // i - 1 because the first element is 0 internally
 		} else if (ifile("Top_Boundary_Type", "") == "Neumann") {
 			topBTList.push_back(Neumann);
 			topWFList.push_back(0); // WF = 0 if Neumann
@@ -69,6 +70,10 @@ void InOut2D::readDevice2D(std::string filename) {
 			layerName.push_back(ifile("Material", ""));
 			layerThickness.push_back(ifile("Thickness",0.0));
 			layerPoint.push_back(ifile("Ny",0));
+
+			// Remember which layers are connect to drain/source
+			(ifile("ConnectTo", "") == "Drain") ? connect2Drain.push_back(true) : connect2Drain.push_back(false);
+			(ifile("ConnectTo", "") == "Source") ? connect2Source.push_back(true) : connect2Source.push_back(false);
 
 			// first block need to define left boundary condition for each layer
 			if (i == 1) {
@@ -107,6 +112,38 @@ void InOut2D::readDevice2D(std::string filename) {
 	vdsArray[0] = ifile("Vds_From", 0.0);
 	vdsArray[1] = ifile("Vds_To", 0.0);
 	vdsArray[2] = ifile("Vds_Step", 0.0);
+	ifile.set_prefix("Vss/");
+	vssArray[0] = ifile("Vss_From", 0.0);
+	vssArray[1] = ifile("Vss_To", 0.0);
+	vssArray[2] = ifile("Vss_Step", 0.0);
+
+	// Read Terminal Connection
+	ifile.set_prefix("ConnectTerminal/");
+	if (ifile("TopGate_and_BackGate", "") == "Yes")
+		terminalConnect[0] = true;
+	else if (ifile("TopGate_and_BackGate", "") == "No")
+		terminalConnect[0] = false;
+	else
+		std::cerr << "Error: TopGate_and_BackGate is not defined." << std::endl;
+	if (ifile("TopGate_and_Drain", "") == "Yes")
+		terminalConnect[1] = true;
+	else if (ifile("TopGate_and_Drain", "") == "No")
+		terminalConnect[1] = false;
+	else
+		std::cerr << "Error: TopGate_and_Drain is not defined." << std::endl;
+	if (ifile("BackGate_and_Drain", "") == "Yes")
+		terminalConnect[2] = true;
+	else if (ifile("BackGate_and_Drain", "") == "No")
+		terminalConnect[2] = false;
+	else
+		std::cerr << "Error: BackGate_and_Drain is not defined." << std::endl;
+
+
+	// Read Poisson Convergence Condition
+	ifile.set_prefix("PoissonConvergence/");
+	voltageErr = ifile("Voltage_Error", 0.0);
+	carrierConcenErr = ifile("Carrier_Density_Error", 0.0) * 1E10; // in cm^-3
+	magicNum = ifile("Magic_Number", 0.0);
 }
 
 void InOut2D::readMaterial(std::string filename) {
@@ -161,6 +198,20 @@ std::map<int, std::array<double, 4>> InOut2D::gateBiasMap(double Vtg, double Vbg
 		biasMap.insert(std::pair<int, std::array<double, 4>>(i, tempGateBias));
 	}
 	return ( biasMap );
+}
+
+void InOut2D::writeCapaMap(std::string fileName, std::map<std::vector<double>, double> map) {
+	std::ofstream myfile;
+	myfile.open((fileName+".csv").c_str());
+	myfile << "Vbg" << ", " << "Vtg for Cgd/Cgs (Vds for Cgg)" << ", " << "Vds for Cgd/Cgs (Vtg for Cgg)" << ", " << "Capacitance (fF/um)" << "\n";
+	for (std::map<std::vector<double>, double>::iterator it = map.begin(); it != map.end(); ++it) {
+		for (int i = 0; i < it->first.size(); i++) {
+			// double to string method 2
+			myfile << std::to_string(it->first[i]) << ", ";
+		}
+		myfile << std::to_string(it->second * 1E11)  << "\n"; // fF/um
+	}
+	myfile.close();
 }
 
 void InOut2D::writeCB(std::string fileName,
