@@ -14,13 +14,13 @@
 #include "Poisson2D.h"
 #include "InOut2D.h"
 #include "Capacitance.h"
+#include "GateEfficiency.h"
 
 class Run2D {
 private:
 	InOut2D io2D;
 	std::vector<ExtractData> data2DPerBias;
 	// first: bias; second/third: cB1, vB1, cB2, vB2, ...;
-	std::vector< std::vector< std::vector<double> > > band2DPerBias;
 
 public:
 	Run2D();
@@ -28,9 +28,9 @@ public:
 	std::map<std::string, Material> readInput(int argc, char** argv);
 	Device2D createDevice2D(int argc, char** argv);
 	void runPoisson2D(int argc, char** argv);
+	void storeExtractDate(ExtractData ed);
 
 	std::vector<ExtractData> getData2D();
-	std::vector< std::vector< std::vector<double> > > getBand2D();
 	InOut2D getIO2D();
 
 private:

@@ -159,3 +159,53 @@
 	mv_eff = 0.4
 	gv_of_Ec = 2
 	gv_of_Ev = 2
+
+
+[WTe2_2D]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 4.05
+	Bandgap = 0.75
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 0 /* 1/nm^3  -> 1E21 1/cm^3 */ 
+	mc_eff = 0.37
+	mv_eff = 0.3
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+
+
+[WTe2_2D_n]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 4.05
+	Bandgap = 0.75
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 2 
+	Na = 0 /* 1/nm^3  -> 1E21 1/cm^3 */ 
+	mc_eff = 0.37
+	mv_eff = 0.3
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+
+[WTe2_2D_p]
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 4.05
+	Bandgap = 0.75
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	/* ignore the following for Dielectric type */
+	Nd = 0 
+	Na = 2 /* 1/nm^3  -> 1E21 1/cm^3 */ 
+	mc_eff = 0.37
+	mv_eff = 0.3
+	gv_of_Ec = 2
+	gv_of_Ev = 2

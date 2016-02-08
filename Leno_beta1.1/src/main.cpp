@@ -74,21 +74,17 @@ int main( int argc, char** argv ) {
 		r2d.runPoisson2D(argc, argv);
 
 //		/* ploting and saving */
-		std::vector< std::vector< std::vector<double> > > bands = r2d.getBand2D();
-		std::vector<double> tunnelWindows;
-		for (int i = 0; i < bands.size(); i++) { // each bias
+//		std::vector< std::vector< std::vector<double> > > bands = r2d.getBand2D();
+
+//		for (int i = 0; i < bands.size(); i++) { // each bias
 			//TODO: add a input to choose whether to plot this
 //			for (int j = 0; j < bands[i].size(); j++) { // each bands
 //			plt::plot(bands[i][j]);
 //			}
 //			plt::show();
-			// TODO: find way to generalize it
-			 tunnelWindows.push_back(bands[i][0][100] - bands[i][1][10]); // for n-pin
-//			 tunnelWindows.push_back(bands[i][0][100] - bands[i][3][100]); // for n-Thin
-//			io2D.writeCB((io2D.devName+"_"+io2D.userCom), data.cBMap);
-		}
-		plt::plot(tunnelWindows);
-		plt::show();
+//		}
+//		plt::plot(tunnelWindows);
+//		plt::show();
 	}
 
 

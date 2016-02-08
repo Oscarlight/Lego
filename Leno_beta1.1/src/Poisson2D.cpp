@@ -27,12 +27,12 @@ std::map<int, std::vector<double>> Poisson2D::createFermiLevelMap(std::vector<bo
 		for (int j = 0; j < dev2D.getDev1DList()[i].getNyList().size(); j++) { // index of each layer
 			if (connect2Drain[accu + j] == true) {
 				for (int k = 0; k < dev2D.getDev1DList()[i].getNyList()[j]; k++ ) { // index of each point in a layer
-					fL[interAccu + k] = Vds;
+					fL[interAccu + k] = -Vds;
 				}
 			}
 			if (connect2Source[accu + j] == true) {
 				for (int k = 0; k < dev2D.getDev1DList()[i].getNyList()[j]; k++ ) { // index of each point in a layer
-					fL[interAccu + k] = Vss;
+					fL[interAccu + k] = -Vss;
 				}
 			}
 			interAccu += dev2D.getDev1DList()[i].getNyList()[j];

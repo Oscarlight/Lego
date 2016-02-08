@@ -50,8 +50,8 @@ CU_O = lib/cubature-1.0.2/pcubature.o
 
 all : $(target)
 
-$(target): $(OBJ)  MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o Capacitance.o $(CU_O)
-	$(CC) $(CFLAGS) $(OBJ) MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o Capacitance.o $(CU_O) -o $(target)  $(MYLIBS)
+$(target): $(OBJ)  MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o Capacitance.o GateEfficiency.o $(CU_O)
+	$(CC) $(CFLAGS) $(OBJ) MathFunct.o Params.o Material.o Device1D.o Device2D.o Poisson1D.o Poisson2D.o Transport.o Tunnelling.o ExtractData.o InOut.o InOut2D.o Run1D.o Run2D.o Capacitance.o GateEfficiency.o $(CU_O) -o $(target)  $(MYLIBS)
 	
 $(OBJ) : $(SRCDIR)$(SRC)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)$(SRC)
@@ -86,6 +86,8 @@ Run2D.o :     $(SRCDIR)Run2D.cpp         $(INCLUDEDIR)Run2D.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Run2D.cpp
 Capacitance.o : $(SRCDIR)Capacitance.cpp $(INCLUDEDIR)Capacitance.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)Capacitance.cpp
+GateEfficiency.o : $(SRCDIR)GateEfficiency.cpp $(INCLUDEDIR)GateEfficiency.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c $(SRCDIR)GateEfficiency.cpp
 
 .phony : clean
 

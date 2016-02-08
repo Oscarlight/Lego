@@ -20,12 +20,13 @@ bool ExtractData::bandAndCharge2D(Poisson2D p2D, Device2D dev2D) {
 	vBMap = array2Map(p2D.getValeBand_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	chargeDensityMap = array2Map(p2D.getCDA_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	spacingXMap = array2Map(dev2D.getSpacingX_2D(), dev2D.getUnitSize(), dev2D.getNxList());
+	return (bandAndCharge2DDone = true);
 }
 
 
 /** return C/cm not charge density */
 double ExtractData::topGateCharge2D(Device2D dev2D, std::vector<int> gateArea) {
-	double sumCharge = 0;
+	sumCharge = 0;
 	// std::cout << " Enter top gate charge 2D" << std::endl;
 	for (int i : gateArea) {
 		// std::cout << " gateArea = " << i <<  std::endl;
@@ -78,7 +79,7 @@ bool ExtractData::bandAndCharge(Poisson1D p1D, Device1D dev1D) {
 }
 
 /**
- * Run it after bandAndCharge2D
+ * Run it after bandAndCharge
  */
 int ExtractData::bASemiOnly() {
 	if( bandAndChargeDone != true)
@@ -98,6 +99,27 @@ int ExtractData::bASemiOnly() {
 	}
 	return (numSemi);
 }
+
+/**
+ * Run it after bandAndCharge2D
+ * return band by layer for the layer connected to S/D
+ */
+// TODO: generalize it, now design only for pin/thin tfet
+int ExtractData::bASemiOnly2D(std::vector<int> sdIndex){
+	if( bandAndCharge2DDone != true)
+		std::cerr << "Error: bandAlignment 2D needs to be run first." << std::endl;
+
+	int numLayer = 2;
+	bandByLayer.push_back(mapRowSlide(cBMap, sdIndex[0])); // top for ThinTFET
+	bandByLayer.push_back(mapRowSlide(vBMap, sdIndex[0]));
+	if (sdIndex[0] != sdIndex[1]) { // source and drain are not at the same layer
+		bandByLayer.push_back(mapRowSlide(cBMap, sdIndex[1])); // bottom for ThinTFET
+		bandByLayer.push_back(mapRowSlide(vBMap, sdIndex[1]));
+		numLayer += 2;
+	}
+	return (numLayer);
+}
+
 
 std::map<int, std::vector<std::vector<double> > > ExtractData::array2Map(mat a, int unitSize, std::vector<int> nxList) {
 	int accu = 0;

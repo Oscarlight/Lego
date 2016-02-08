@@ -214,6 +214,23 @@ void InOut2D::writeCapaMap(std::string fileName, std::map<std::vector<double>, d
 	myfile.close();
 }
 
+void InOut2D::writeGateEffMap(std::string fileName, std::map<std::vector<double>, std::vector<double>> map) {
+	std::ofstream myfile;
+	myfile.open((fileName+".csv").c_str());
+	myfile << "Vbg" << ", " << "Vds" << ", " << "first tunnel window (eV)" << ", " << "first tunnel window (eV)" << ", " 
+	<< "efficiency around 0 (eV/V)" << ", " << "threshold voltage (V)" << "\n";
+	for (std::map<std::vector<double>, std::vector<double>>::iterator it = map.begin(); it != map.end(); ++it) {
+		for (int i = 0; i < it->first.size(); i++) {
+			myfile << std::to_string(it->first[i]) << ", ";
+		}
+		for (int i = 0; i < it->second.size(); i++) {
+			myfile << std::to_string(it->second[i])<< ", ";
+		}
+		myfile << "\n";
+	}
+	myfile.close();
+}
+
 void InOut2D::writeCB(std::string fileName,
 		std::map<int, std::vector<std::vector<double> > > cBMap) {
 	std::ofstream myfile;

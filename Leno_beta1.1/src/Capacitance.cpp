@@ -51,11 +51,15 @@ void Capacitance::calCggCgsCgd(std::vector<double> vtgArray, std::vector<double>
 					double thisCharge = topGateChargeMap.at(thisV);
 					double dvtg = nextVtg - thisVtg;
 					double dCharge = nextCharge - thisCharge;
-					double Cgs = dCharge / dvtg;
+					double Cgg = dCharge / dvtg;
 					// std::cout << "--- Cgs = " << Cgs << " @ Vtg = " << thisVtg << std::endl;
 					// Vss == 0, so exclude it from voltage array for print (i.e. thisVPrint)
 					std::vector<double> thisVPrint; thisVPrint.push_back(Vbg); thisVPrint.push_back(Vds); thisVPrint.push_back(thisVtg); // change order
-					cggMap.insert(std::pair<std::vector<double>, double>(thisVPrint, Cgs));
+
+					if (terminalConnect[0] == true) // if double gated, dOg = 2 dOtg
+						Cgg = 2 * Cgg;
+
+					cggMap.insert(std::pair<std::vector<double>, double>(thisVPrint, Cgg));
 				}
 			}
 		}
@@ -122,6 +126,10 @@ void Capacitance::calCggCgsCgd(std::vector<double> vtgArray, std::vector<double>
 					// std::cout << "--- Cgd = " << Cgd << " @ Vgd = " << thisVgd << std::endl;
 					// Vss == 0, so exclude it from voltage array for print (i.e. thisVPrint)
 					std::vector<double> thisVPrint; thisVPrint.push_back(Vbg); thisVPrint.push_back(Vtg); thisVPrint.push_back(Vds);
+
+					if (terminalConnect[0] == true) // if double gated, dQg = 2 dQtg
+						Cgs = 2 * Cgs;
+
 					cgsMap.insert(std::pair<std::vector<double>, double>(thisVPrint, Cgs));
 				}
 			}

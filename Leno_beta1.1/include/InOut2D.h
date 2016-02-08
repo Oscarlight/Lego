@@ -64,6 +64,7 @@ public:
 	// write
 	void writeCB(std::string fileName, std::map<int, std::vector<std::vector<double> > > cBMap);
 	void writeCapaMap(std::string fileName, std::map<std::vector<double>, double> map);
+	void writeGateEffMap(std::string fileName, std::map<std::vector<double>, std::vector<double>> map);
 	static void printMatToText(const char* filename, mat matrix);
 };
 
