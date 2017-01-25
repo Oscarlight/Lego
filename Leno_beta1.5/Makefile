@@ -26,6 +26,7 @@ CC = g++
 CFLAGS = -g -std=c++11
 # The location of include files of various libraries
 # Only work with ".lib/...", not "lib/...", why?
+# On some computer, may only work without "."
 ARMA_INCLUDE = .lib/armadillo-6.100.0/include 
 SL_INCLUDE = lib/SuperLU_4.3/SRC
 GP_INCLUDE = lib/getpot-c++
