@@ -1,9 +1,9 @@
 /* Device File */
 
 [Device1D]
-	Device_Name = BackGatedSnSe2
-	User_Comment = wIonFM   /* One word comment */
-	Layer_Number = 5           /* For Thin-TFET, it is always 5 layars */
+	Device_Name = WSe2SnSe2TFET
+	User_Comment = Mingda   /* One word comment */
+	Layer_Number = 6           /* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]       
 		Bottom_Boundary_Type = Dirichlet   /* You don't need to change it */
@@ -12,33 +12,39 @@
 		/* Top_Gate_Workfunction = 5.05        /* Change it if you like to use another metal */
 
 [Layer1] /* Back Gate Oxide */
-	Material = SiO2
-	Thickness =  285 /* nm */
-	Ny = 2850 /* points in y direction (thickness) */
+	Material = Al2O3
+	Thickness =  10 /* nm */
+	Ny = 10 /* points in y direction (thickness) */
 
 
 [Layer2] /* Bottom 2D Layer */
 	Material = WSe2_3D
 	Thickness = 5
-	Ny = 50
+	Ny = 5
 	ConnectTo = Drain // Indicate apply Vds here 
 
-[Layer3] /* van der Waals gap */
-	Material = Ion_neutral  /* Ion_neutral / Air */
-	Thickness = 1
-	Ny = 10
+
+[Layer3] /* Bottom 2D Layer */
+	Material = SnSe2_3D
+	Thickness = 20
+	Ny = 20
+	ConnectTo = Source // Indicate apply Vds here 
 
 [Layer4] /* van der Waals gap */
-	Material = Ion_negative
+	Material = Ion_neutral  /* Ion_neutral / Air */
 	Thickness = 1
-	Ny = 10
+	Ny = 1
 
 [Layer5] /* van der Waals gap */
+	Material = Ion_negative
+	Thickness = 1
+	Ny = 1
+
+[Layer6] /* van der Waals gap */
 	Material = Ion_neutral 
 	Thickness = 18
-	Ny = 180 
-
-		
+	Ny = 18	
+	
 
 /* all unit is V */
 /* From small value to large value */
@@ -47,13 +53,13 @@
 	Vtg_To = 0
 	Vtg_Step = 0
 [Vbg]
-	Vbg_From = 30
-	Vbg_To = 30
-	Vbg_Step = 5
+	Vbg_From = -2
+	Vbg_To = 0
+	Vbg_Step = 0.5
 [Vds]
-	Vds_From = 0
-	Vds_To = 0
-	Vds_Step = 0
+	Vds_From = -1
+	Vds_To = -1
+	Vds_Step = 2
 [Vss]
 	Vss_From = 0
 	Vss_To = 0
@@ -71,7 +77,7 @@
 [PoissonConvergence]
 	Voltage_Error = 0.001 /* V */
 	Carrier_Density_Error = 1 /* 1E10 cm^-3 */
-	Magic_Number = 0.0005 /* Not converging? tune this value smaller */
+	Magic_Number = 0.0003 /* Not converging? tune this value smaller */
 
 	 
 

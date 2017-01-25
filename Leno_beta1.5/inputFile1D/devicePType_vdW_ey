@@ -2,7 +2,7 @@
 
 [Device1D]
 	Device_Name = p-Thin_TFET
-	User_Comment = vdw_3	/* One word comment */
+	User_Comment = vdw_6	/* One word comment */
 	Layer_Number = 5 	/* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]
@@ -41,9 +41,9 @@
 /* all unit is V */
 /* From small value to large value */
 [Vtg]
-	Vtg_From = -0.4
-	Vtg_To = -0.0
-	Vtg_Step = 0.05 /* normally 0.005 */
+	Vtg_From = -1.5
+	Vtg_To = -0.6
+	Vtg_Step = 0.005 /* normally 0.005 */
 [Vbg]
 	Vbg_From = 0
 	Vbg_To = 0

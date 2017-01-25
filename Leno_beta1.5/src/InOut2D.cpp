@@ -234,39 +234,40 @@ void InOut2D::writeGateEffMap(std::string fileName, std::map<std::vector<double>
 	myfile.close();
 }
 
-void InOut2D::writeCB(std::string fileName,
-		std::map<int, std::vector<std::vector<double> > > cBMap) {
+/** write in a form of matrix over the span of the whole device,
+ * normally only used for signal bias simulation */
+void InOut2D::write2DData(std::string fileName,
+		std::map<int, std::vector<std::vector<double> > > dataMap) {
 	std::ofstream myfile;
-	myfile.open((fileName+"_condBand.csv").c_str());
+	myfile.open((fileName+".csv").c_str());
 
-	int unitSize = cBMap.at(0)[0].size();
+	int unitSize = dataMap.at(0)[0].size();
 	// std::cout << unitSize << std::endl;
 	for (int k = 0; k < unitSize; k++) { // point
-		for (int i = 0; i < cBMap.size(); i++) { // block
-			for (int j = 0; j < cBMap.at(i).size(); j++) {// slice
-				// std::cout << cBMap.at(i).size() << std::endl; // # of slice in a block
-				// std::cout <<  k << ", " << i << ", " << j << std::endl;
-				myfile << cBMap.at(i)[j][k] << ", ";
+		for (int i = 0; i < dataMap.size(); i++) { // block
+			for (int j = 0; j < dataMap.at(i).size(); j++) {// slice
+				myfile << dataMap.at(i)[j][k] << ", ";
 			}
 		}
 		myfile << "\n";
 	}
 	myfile.close();
-	std::cout << "Conduction band data: " << fileName << "_condBand.csv" << " is exported." <<  std::endl;
+	std::cout << fileName << " is exported." <<  std::endl;
 }
 
 
-void InOut2D::writeBandsinSemi(std::string fileName, std::vector<double> vtgArray, std::vector<double> vdsArray, std::vector<double> vbgArray,
-			std::vector< std::vector< std::vector<double> > > band2DPerBias) {
+void InOut2D::writeByLayerinSemi(std::string fileName, std::vector<double> vtgArray,
+		std::vector<double> vdsArray, std::vector<double> vbgArray,
+		std::vector< std::vector< std::vector<double> > > data2DPerBias) {
 
 	std::ofstream myfile;
 	myfile.open((fileName+".csv").c_str());
-	myfile << "Vbg" << ", " << "Vds" << ", " << "Vtg" << ", " << "BandIndex" << ", " << "Bands (eV)"  << "\n";
+	myfile << "Vbg" << ", " << "Vds" << ", " << "Vtg" << ", " << "index" << ", " << "data"  << "\n";
 
 	// in consistent with the for-loop when calculating 2D Poisson in Run2D.cpp
 	int accu = 0;
-	int numOfBands = band2DPerBias[0].size();
-	int numOfPointInBand = band2DPerBias[0][0].size();
+	int numOfBands = data2DPerBias[0].size();
+	int numOfPointInBand = data2DPerBias[0][0].size();
 	for (int i = 0; i < vbgArray.size(); i++) {
 		for (int j = 0; j < vdsArray.size(); j++) {
 			for (int k = 0; k < vtgArray.size(); k++) {
@@ -274,7 +275,7 @@ void InOut2D::writeBandsinSemi(std::string fileName, std::vector<double> vtgArra
 				for (int m = 0; m < numOfBands; m++) {
 					myfile << vbgArray[i] << ", " << vdsArray[j] << ", " << vtgArray[k] << ", " << m << ", ";
 					for (int n = 0; n < numOfPointInBand; n++) {
-						myfile << band2DPerBias[accu][m][n] << ", ";
+						myfile << data2DPerBias[accu][m][n] << ", ";
 					}
 					myfile << "\n";
 				}
@@ -282,9 +283,11 @@ void InOut2D::writeBandsinSemi(std::string fileName, std::vector<double> vtgArra
 			}
 		}
 	}
+
 	myfile.close();
-	std::cout << "Bands in Semiconductors: " << fileName << ".csv" << " is exported." <<  std::endl;
+	std::cout << fileName << ".csv" << " is exported." <<  std::endl;
 }
+
 
 /* static */
 void InOut2D::printMatToText(const char* filename, mat matrix)

@@ -2,7 +2,7 @@
 
 [Device1D]
 	Device_Name = BackGatedSnSe2
-	User_Comment = woIonAlltheWay        /* One word comment */
+	User_Comment = woIonFM        /* One word comment */
 	Layer_Number = 3           /* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]       
@@ -36,7 +36,7 @@
 	Vtg_To = 0
 	Vtg_Step = 0
 [Vbg]
-	Vbg_From = -100
+	Vbg_From = -300
 	Vbg_To = 30
 	Vbg_Step = 10
 [Vds]

@@ -121,8 +121,10 @@ void Run2D::runPoisson2D(int argc, char** argv) {
     GateEfficiency gE;
     GateEfficiency gE2; // for gate efficiency at the edge.
 
-    /* [different bias][different bands][band data at different point] */
+    /* [different bias][different bands(2 per layer)][band data at different point] */
     std::vector< std::vector< std::vector<double> > > band2DPerBias;
+    /* [different bias][different layers][band data at different point] */
+    std::vector< std::vector< std::vector<double> > > charge2DPerBias;
 
     for (double Vbg : vbgArray) {
     	for (double Vss : vssArray) {
@@ -153,12 +155,19 @@ void Run2D::runPoisson2D(int argc, char** argv) {
     				// Extract Data
     				ExtractData eD;
     				eD.bandAndCharge2D(p2D, dev2D); // first read into band info for this bias
+    			    // only use this for single bias simulation
+    				if (vtgArray.size() * vbgArray.size() * vtgArray.size() * vssArray.size() == 1)
+    					io2D.write2DData(io2D.devName+"_"+io2D.userCom+"_Potential", eD.potentialMap);
 
     				// Store the bandAlignment for selected layer for gate efficiency calculation
     				if (Vss == 0) {
-    					eD.bASemiOnly2D(sdIndex);
-    					band2DPerVtg.push_back(eD.bandByLayer); /* [different Vtg][different bands][band data at different point] */
-    					band2DPerBias.push_back(eD.bandByLayer); /* [different bias][different bands][band data at different point] */
+    					eD.bAChargeSemiOnly2D(sdIndex);
+    					/* [different Vtg][different bands(2 per layer)][band data at different point] */
+    					band2DPerVtg.push_back(eD.bandByLayer);
+    					/* [different bias][different bands(2 per layer)][band data at different point] */
+    					band2DPerBias.push_back(eD.bandByLayer);
+    				    /* [different bias][different layers][band data at different point] */
+    				    charge2DPerBias.push_back(eD.chargeByLayer);
     				}
 
     				// read top gate charge into capa for later capacitance calculation
@@ -185,10 +194,11 @@ void Run2D::runPoisson2D(int argc, char** argv) {
     /**
      * Output
      */
-      io2D.writeBandsinSemi(io2D.devName+"_"+io2D.userCom+"_Bands", vtgArray, vdsArray, vbgArray, band2DPerBias);
+      io2D.writeByLayerinSemi(io2D.devName+"_"+io2D.userCom+"_Bands", vtgArray, vdsArray, vbgArray, band2DPerBias);
+      io2D.writeByLayerinSemi(io2D.devName+"_"+io2D.userCom+"_Charges", vtgArray, vdsArray, vbgArray, charge2DPerBias);
 //    io2D.writeCapaMap(io2D.devName+"_"+io2D.userCom+"_Cgs", capa.getCgsMap());
 //    io2D.writeCapaMap(io2D.devName+"_"+io2D.userCom+"_Cgd", capa.getCgdMap());
 //    io2D.writeCapaMap(io2D.devName+"_"+io2D.userCom+"_Cgg", capa.getCggMap());
-//    io2D.writeGateEffMap(io2D.devName+"_"+io2D.userCom+"_GateEfficiency_atChannelCenter", gE.getGateEffMap());
-//    io2D.writeGateEffMap(io2D.devName+"_"+io2D.userCom+"_GateEfficiency_atEdgeThinTFET", gE2.getGateEffMap());
+      io2D.writeGateEffMap(io2D.devName+"_"+io2D.userCom+"_GateEfficiency_atChannelCenter", gE.getGateEffMap());
+      io2D.writeGateEffMap(io2D.devName+"_"+io2D.userCom+"_GateEfficiency_atEdgeThinTFET", gE2.getGateEffMap());
 }

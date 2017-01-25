@@ -154,6 +154,10 @@ mat Poisson2D::getPhip_2D() {
 	return (phip);
 }
 
+mat Poisson2D::getPotential_2D() {
+	return (potential);
+}
+
 mat Poisson2D::getCDA_2D() {
 	return (cDA);
 }
@@ -170,7 +174,7 @@ void Poisson2D::runPoisson2D(double vTolerance, double _chargeTolerance, double 
 	// potential == vacuum level
 	double chargeTolerance = _chargeTolerance / ( pow(cmNL(1), 3) );
 	// std::cout << phin.size() << ", " << dev2D.getEAArray_2D().size() << ", " << fLnArray.size() << std::endl;
-	mat potential= phin + dev2D.getEAArray_2D() + fLnArray;
+	potential = phin + dev2D.getEAArray_2D() + fLnArray;
 //  std::cout << dev2D.getEAArray_2D() << std::endl; // proved!
 //	std::cout << fLnArray << std::endl; /* Mark 11/16: found bugs in fLnArray */
 	mat bCArray = bCArrayFunct_2D(dev2D, biasMap);

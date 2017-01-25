@@ -62,9 +62,9 @@ public:
 	std::map<int, std::array<double, 4>> gateBiasMap(double Vtg, double Vbg);
 
 	// write
-	void writeCB(std::string fileName, std::map<int, std::vector<std::vector<double> > > cBMap);
-	void writeBandsinSemi(std::string fileName, std::vector<double> vtgArray, std::vector<double> vdsArray, std::vector<double> vbgArray,
-			std::vector< std::vector< std::vector<double> > > band2DPerBias);
+	void write2DData(std::string fileName, std::map<int, std::vector<std::vector<double> > > dataMap);
+	void writeByLayerinSemi(std::string fileName, std::vector<double> vtgArray, std::vector<double> vdsArray, std::vector<double> vbgArray,
+			std::vector< std::vector< std::vector<double> > > data2DPerBias);
 	void writeCapaMap(std::string fileName, std::map<std::vector<double>, double> map);
 	void writeGateEffMap(std::string fileName, std::map<std::vector<double>, std::vector<double>> map);
 	static void printMatToText(const char* filename, mat matrix);

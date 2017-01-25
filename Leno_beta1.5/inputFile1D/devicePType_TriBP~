@@ -1,15 +1,15 @@
 /* Device File */
 
 [Device1D]
-	Device_Name = p-Thin_TFET
-	User_Comment = vdw_3	/* One word comment */
-	Layer_Number = 5 	/* For Thin-TFET, it is always 5 layars */
+	Device_Name = p-Thin_TFET_TriBP
+	User_Comment = p-Thin-TEFT_TripleBP	/* One word comment */
+	Layer_Number = 9 	/* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]
 		Bottom_Boundary_Type = Dirichlet	/* You don't need to change it */
 		Bottom_Gate_Workfunction = 4.8		/* Change it if you like to use another gate metal */
 		Top_Boundary_Type = Dirichlet		/* You don't need to change it */
-		Top_Gate_Workfunction = 5.35		/* Change it if you like to use another metal */
+		Top_Gate_Workfunction = 3.7		/* Change it if you like to use another metal */
 
 [Layer1] /* Back Gate Oxide */
 	Material = SiO2
@@ -28,12 +28,34 @@
 	Ny = 30
 
 [Layer4] /* Top 2D Layer */
-	Material = WSe2_2D
+	Material = BP_2D
 	Thickness = 0
 	Ny = 0
  	ConnectTo = Drain // Indicate apply Vss here
 
-[Layer5] /* Top Gate Oxide */
+[Layer5] /* van der Waals gap */
+	Material = vdWGap
+	Thickness = 0.3
+	Ny = 30
+
+[Layer6] /* Top 2D Layer */
+	Material = BP_2D
+	Thickness = 0
+	Ny = 0
+ 	ConnectTo = Drain // Indicate apply Vss here
+
+[Layer7] /* van der Waals gap */
+	Material = vdWGap
+	Thickness = 0.3
+	Ny = 30
+
+[Layer8] /* Top 2D Layer */
+	Material = BP_2D
+	Thickness = 0
+	Ny = 0
+ 	ConnectTo = Drain // Indicate apply Vss here
+
+[Layer9] /* Top Gate Oxide */
 	Material = SiO2
 	Thickness = 1
 	Ny = 100
@@ -42,8 +64,8 @@
 /* From small value to large value */
 [Vtg]
 	Vtg_From = -0.4
-	Vtg_To = -0.0
-	Vtg_Step = 0.05 /* normally 0.005 */
+	Vtg_To = 0.0
+	Vtg_Step = 0.1 /* normally 0.005 */
 [Vbg]
 	Vbg_From = 0
 	Vbg_To = 0

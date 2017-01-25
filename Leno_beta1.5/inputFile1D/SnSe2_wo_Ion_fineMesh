@@ -2,8 +2,8 @@
 
 [Device1D]
 	Device_Name = BackGatedSnSe2
-	User_Comment = wIonFM   /* One word comment */
-	Layer_Number = 5           /* For Thin-TFET, it is always 5 layars */
+	User_Comment = woIonFM   /* One word comment */
+	Layer_Number = 3           /* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]       
 		Bottom_Boundary_Type = Dirichlet   /* You don't need to change it */
@@ -18,25 +18,15 @@
 
 
 [Layer2] /* Bottom 2D Layer */
-	Material = WSe2_3D
+	Material = SnSe2_3D
 	Thickness = 5
 	Ny = 50
 	ConnectTo = Drain // Indicate apply Vds here 
 
 [Layer3] /* van der Waals gap */
 	Material = Ion_neutral  /* Ion_neutral / Air */
-	Thickness = 1
-	Ny = 10
-
-[Layer4] /* van der Waals gap */
-	Material = Ion_negative
-	Thickness = 1
-	Ny = 10
-
-[Layer5] /* van der Waals gap */
-	Material = Ion_neutral 
-	Thickness = 18
-	Ny = 180 
+	Thickness = 20
+	Ny = 200
 
 		
 
@@ -47,8 +37,8 @@
 	Vtg_To = 0
 	Vtg_Step = 0
 [Vbg]
-	Vbg_From = 30
-	Vbg_To = 30
+	Vbg_From = -30
+	Vbg_To = -30
 	Vbg_Step = 5
 [Vds]
 	Vds_From = 0

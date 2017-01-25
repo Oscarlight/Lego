@@ -22,14 +22,19 @@ public:
 
 	// ---- for 2D band information
 	/**
-	 * in the map, key is the block index; first vector index is the slice index, second vector index is the point index in a slice
-	 *  (slice: 1D device)
+	 * in the map, key is the block index; first vector index is the slice index,
+	 * second vector index is the point index in a slice
+	 * (a slice means a 1D device)
 	 */
-	std::map<int, std::vector<std::vector<double> > > cBMap, vBMap, chargeDensityMap, spacingXMap;
-	/**
-	 * organized in conduction band 1, valence band 1, conduction band 2, valence band 2, ...
+	std::map<int, std::vector<std::vector<double>>> potentialMap, cBMap, vBMap,
+		chargeDensityMap, spacingXMap;
+	/** bandByLayer:
+	 *   organized in conduction band 1, valence band 1, conduction band 2, valence band 2, ...
+	 *  chargeByLayer:
+	 *   organized in charge density in layer 1, charge density in layer 2, ...
 	 */
-	std::vector<std::vector<double> > bandByLayer;
+	std::vector<std::vector<double>> bandByLayer;
+	std::vector<std::vector<double>> chargeByLayer;
 
 	// ---- for capacitance
 	// charge density array on the top gate, set in topGateCharge2D()
@@ -64,7 +69,7 @@ public:
 	/* band alignment in selected layers
 	 * TODO: find a better way to generize it
 	 */
-	int bASemiOnly2D(std::vector<int> sdIndex);
+	int bAChargeSemiOnly2D(std::vector<int> sdIndex);
 
 
 	// Helper methods

@@ -61,12 +61,12 @@
 
 [Plot]
 Plot_Band_Alignment = No /* Not recommend to put "Yes" when doing I-V, but you can */
-Plot_I-V = Yes		 /* Not recommend to put "Yes" when change more than one terminal, e.g. Vds and Vtg */	
+Plot_I-V = No		 /* Not recommend to put "Yes" when change more than one terminal, e.g. Vds and Vtg */	
 Save_Plots = No	         /* no working yet */
 
 [Save]
-Save_Band_Alignment = No /* Not recommend to put "Yes" when doing I-V, but you can */
-Calculate_I-V = Yes		 /* recommend to always put "Yes" here */
+Save_Band_Alignment = Yes /* Not recommend to put "Yes" when doing I-V, but you can */
+Calculate_I-V = No		 /* recommend to always put "Yes" here */
 
 [PoissonConvergence]
 	Voltage_Error = 0.001 /* V */

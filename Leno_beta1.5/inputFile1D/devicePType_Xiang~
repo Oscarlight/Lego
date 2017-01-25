@@ -2,7 +2,7 @@
 
 [Device1D]
 	Device_Name = p-Thin_TFET
-	User_Comment = vdw_3	/* One word comment */
+	User_Comment = TrainEX	/* One word comment */
 	Layer_Number = 5 	/* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]
@@ -43,14 +43,14 @@
 [Vtg]
 	Vtg_From = -0.4
 	Vtg_To = -0.0
-	Vtg_Step = 0.05 /* normally 0.005 */
+	Vtg_Step = 0.005
 [Vbg]
 	Vbg_From = 0
 	Vbg_To = 0
 	Vbg_Step = 0
 [Vds]
 	Vds_From = -0.4
-	Vds_To = -0.4 /* normally 0.2: third quadrant */
+	Vds_To = 0.2 /* third quadrant */
 	Vds_Step = 0.005
 [Vss]
 	Vss_From = 0

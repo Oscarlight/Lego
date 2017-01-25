@@ -16,9 +16,10 @@ ExtractData::~ExtractData() {
 }
 
 bool ExtractData::bandAndCharge2D(Poisson2D p2D, Device2D dev2D) {
+	potentialMap = array2Map(p2D.getPotential_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	cBMap = array2Map(p2D.getCondBand_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	vBMap = array2Map(p2D.getValeBand_2D(), dev2D.getUnitSize(), dev2D.getNxList());
-	chargeDensityMap = array2Map(p2D.getCDA_2D(), dev2D.getUnitSize(), dev2D.getNxList());
+	chargeDensityMap = array2Map(p2D.getCDA_2D(), dev2D.getUnitSize(), dev2D.getNxList()); //still in Leno units
 	spacingXMap = array2Map(dev2D.getSpacingX_2D(), dev2D.getUnitSize(), dev2D.getNxList());
 	return (bandAndCharge2DDone = true);
 }
@@ -102,20 +103,25 @@ int ExtractData::bASemiOnly() {
 }
 
 /**
- * Run it after bandAndCharge2D
+ * Precondition: Run it after bandAndCharge2D
+ * write to bandByLayer and chargeByLayer,
+ * which have band alignment (conduction band/valence band)
+ * and charge density in 2D layers.
  * return band by layer for the layers connected to S/D
  */
 // TODO: generalize it, now design only for pin/thin tfet
-int ExtractData::bASemiOnly2D(std::vector<int> sdIndex){
+int ExtractData::bAChargeSemiOnly2D(std::vector<int> sdIndex){
 	if( bandAndCharge2DDone != true)
 		std::cerr << "Error: bandAlignment 2D needs to be run first." << std::endl;
 
 	int numOfBand = 2; // for pin-TFET, only 2: conduction and valence
 	bandByLayer.push_back(mapRowSlide(cBMap, sdIndex[0])); // top for ThinTFET
 	bandByLayer.push_back(mapRowSlide(vBMap, sdIndex[0]));
+	chargeByLayer.push_back(mapRowSlide(chargeDensityMap, sdIndex[0]));
 	if (sdIndex[0] != sdIndex[1]) { // source and drain are not at the same layer
 		bandByLayer.push_back(mapRowSlide(cBMap, sdIndex[1])); // bottom for ThinTFET
 		bandByLayer.push_back(mapRowSlide(vBMap, sdIndex[1]));
+		chargeByLayer.push_back(mapRowSlide(chargeDensityMap, sdIndex[1]));
 		numOfBand += 2; // for Thin-TFET, 2 more bands
 	}
 	return (numOfBand);

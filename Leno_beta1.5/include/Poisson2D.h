@@ -41,6 +41,7 @@ private:
 	mat phin;
 	mat phip;
 	//
+	mat potential;
 	mat condBand;
 	mat valeBand;
 
@@ -60,6 +61,7 @@ public:
 	mat getValeBand_2D();
 	mat getPhin_2D();
 	mat getPhip_2D();
+	mat getPotential_2D();
 	mat getCDA_2D();
 
 	// Helpers

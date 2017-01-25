@@ -54,16 +54,20 @@ double Material::electronDensity(double phin) {
 	case 2:
 	{
 		electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
+		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
+//		electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
+//				10 * Vth * log1p(exp((bandGap/2 - phin)/Vth)) / t2D;
 	}
 	break;
 	case 3:
 	{
 		//TODO: IMPORTANT!! ALWAYS get Nta = 0, do make clean, problem solved!!
 		//TODO: add Nta options in the input file. tried but ExtractData will not run correctly
-		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-				fermiIntegralHalf(-phin/Vth) + 1600 * exp(-(phin - 0.14)/(1 * Vth))*Vth*ChargeQ*log1p(exp((phin - 0.14)/(1 * Vth)));
-//		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
-//						fermiIntegralHalf(-phin/Vth);
+		// for DRC2016 Nta = 1600
+//		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
+//				fermiIntegralHalf(-phin/Vth) + 1600 * exp(-(phin - 0.14)/(1 * Vth))*Vth*ChargeQ*log1p(exp((phin - 0.14)/(1 * Vth)));
+		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
+						fermiIntegralHalf(-phin/Vth);
 //		std::cout << " electronDensity = " << electronDensity << std::endl;
 //		std::cout << " fermi Integral half = " << fermiIntegralHalf(-phin/Vth) << std::endl;
 //		std::cout << " Nc = " << 2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) << std::endl;
@@ -124,15 +128,18 @@ double Material::holeDensity(double phip) {
 	case 2:
 	{
 		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
+//		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
+//				10 * Vth * log1p(exp((bandGap/2 - phip)/Vth)) / t2D;
 	}
 	break;
 	case 3:
 	{
 		//TODO: add Ntd options in the input file. tried but ExtractData will not run correctly
-        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-        		fermiIntegralHalf(-phip/Vth) + Ntd*exp(-phip/Vth)*Vth*ChargeQ*log1p(exp(phip/Vth));
-//        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
-//         		fermiIntegralHalf(-phip/Vth);
+//        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
+//        		fermiIntegralHalf(-phip/Vth) + Ntd*exp(-phip/Vth)*Vth*ChargeQ*log1p(exp(phip/Vth));
+        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
+         		fermiIntegralHalf(-phip/Vth);
 	}
 	break;
 	default:

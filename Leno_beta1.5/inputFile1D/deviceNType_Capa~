@@ -2,19 +2,19 @@
 
 [Device1D]
 	Device_Name = n-Thin_TFET
-	User_Comment = train        /* One word comment */
+	User_Comment = train2        /* One word comment */
 	Layer_Number = 5           /* For Thin-TFET, it is always 5 layars */
 
 		[./Boundary]       
 		Bottom_Boundary_Type = Dirichlet   /* You don't need to change it */
-		Bottom_Gate_Workfunction = 5.65     /* Change it if you like to use another metal */
+		Bottom_Gate_Workfunction = 5.95     /* Change it if you like to use another metal */
 		Top_Boundary_Type = Dirichlet      /* You don't need to change it */
-		Top_Gate_Workfunction = 5.05        /* Change it if you like to use another metal */
+		Top_Gate_Workfunction = 5.20        /* Change it if you like to use another metal */
 
 [Layer1] /* Back Gate Oxide */
 	Material = SiO2
 	Thickness = 1  /* nm */
-	Ny = 100 /* points in y direction (thickness) */
+	Ny = 20 /* points in y direction (thickness) */
 
 [Layer2] /* Bottom 2D Layer */
 	Material = WSe2_2D
@@ -24,8 +24,8 @@
 
 [Layer3] /* van der Waals gap */
 	Material = vdWGap
-	Thickness = 0.3
-	Ny = 30
+	Thickness = 0.35
+	Ny = 7
 
 [Layer4] /* Top 2D Layer */
 	Material = SnSe2_2D
@@ -36,7 +36,7 @@
 [Layer5] /* Top Gate Oxide */
 	Material = SiO2
 	Thickness = 1
-	Ny = 100
+	Ny = 20
 		
 
 /* all unit is V */
@@ -44,15 +44,15 @@
 [Vtg] 
 	Vtg_From = 0
 	Vtg_To = 0.4
-	Vtg_Step = 0.005
+	Vtg_Step = 0.01
 [Vbg]
 	Vbg_From = 0
 	Vbg_To = 0
 	Vbg_Step = 0
 [Vds]
-	Vds_From = -0.2
+	Vds_From = 0
 	Vds_To = 0.4
-	Vds_Step = 0.005
+	Vds_Step = 0.01
 [Vss]
 	Vss_From = 0
 	Vss_To = 0
@@ -72,11 +72,6 @@ Calculate_I-V = Yes		 /* recommend to always put "Yes" here */
 	Voltage_Error = 0.001 /* V */
 	Carrier_Density_Error = 1 /* 1E10 cm^-3 */
 	Magic_Number = 0.1 /* Not converging? tune this value smaller */
-
-[ConnectTerminal]
-	TopGate_and_BackGate = No  /* the only one is working now */
-	TopGate_and_Drain = No
-	BackGate_and_Drain = No
 
 	 
 
