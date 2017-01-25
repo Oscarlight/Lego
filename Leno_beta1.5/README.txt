@@ -1,5 +1,6 @@
 Leno Beta v1.5
-by Mingda Oscar Li (ml888@cornell.edu)
+by Mingda Oscar Li (ml888@cornell.edu) 
+Modified by Xiang Frank Li (xl633@cornell.edu)
 
 0. What is Changed (from v1.0)
 	a. Extract threshold voltage
