@@ -173,10 +173,12 @@ void InOut2D::readMaterial(std::string filename) {
 		v.push_back(ifile("Monolayer_Thickness",0.0));
 		v.push_back(ifile("Nd",0.0));
 		v.push_back(ifile("Na",0.0));
-//		v.push_back(ifile("Nta",0.0));
-//		v.push_back(ifile("Ntd",0.0));
+		// Feb 6th, 2017. Uncomment Nta and Ntd lines. (By Frank)
+		v.push_back(ifile("Nta",0.0));
+		v.push_back(ifile("Ntd",0.0));
 		v.push_back(ifile("mc_eff",0.0));
 		v.push_back(ifile("mv_eff",0.0));
+		v.push_back(ifile("E_CNL",0.0));
 		v.push_back(ifile("gv_of_Ec",0.0));
 		v.push_back(ifile("gv_of_Ev",0.0));
 
