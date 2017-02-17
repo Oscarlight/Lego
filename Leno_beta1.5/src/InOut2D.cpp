@@ -178,9 +178,15 @@ void InOut2D::readMaterial(std::string filename) {
 		v.push_back(ifile("Ntd",0.0));
 		v.push_back(ifile("mc_eff",0.0));
 		v.push_back(ifile("mv_eff",0.0));
-		v.push_back(ifile("E_CNL",0.0));
+		v.push_back(ifile("E_CNLn",0.0));
+		v.push_back(ifile("E_CNLp",0.0));
 		v.push_back(ifile("gv_of_Ec",0.0));
 		v.push_back(ifile("gv_of_Ev",0.0));
+		v.push_back(ifile("nwn",1.0));  // default number of nwn is 1.0.
+		v.push_back(ifile("nwp",1.0));  // default number of nwp is 1.0.
+		v.push_back(ifile("E_peakn",0.14)); //default number of E_peakn is 0.14.
+		v.push_back(ifile("E_peakp",0.0)); //default number of E_peakp is 0.0.
+
 
 		matMap.insert(std::pair<std::string, std::vector<double>>(layerName[i], v));
 		// Map will eliminate duplication automatically

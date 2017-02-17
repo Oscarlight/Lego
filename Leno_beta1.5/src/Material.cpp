@@ -27,8 +27,6 @@ Material::Material(int _index, int _type, const char *pname, double _dielectricC
 	    	t2D = _t2D * cmNL(1E-7); // origin: nm
 	    	Nd = _Nd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
 	    	Na = _Na * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
-	    	//Nta = 0; // Acceptor-like trap density (same unit as Nd)
-	    	//Ntd = 0;
 		// Feb 6th, 2017. Uncomment Nta and Ntd lines and comment Nta=0 and Ntd=0 lines. (By Frank)
 	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
 	    	Ntd = _Ntd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
@@ -55,15 +53,15 @@ double Material::electronDensity(double phin) {
 	switch (dimension) {
 	case 2:
 	{
-		if (E_CNLn==0) {
+		if (Nta-0.0<1e-16) {
 			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
 		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
 		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
 		else {
-		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive.
+		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. Change 10 to Nta.
 			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
-					10 * Vth * log1p(exp((bandGap/2 - E_CNLn - phin)/Vth)) / t2D;
+					Nta * Vth * log1p(exp((bandGap/2 - E_CNLn - phin)/Vth)) / t2D;
 		}
 	}
 	break;
@@ -73,13 +71,13 @@ double Material::electronDensity(double phin) {
 		//TODO: add Nta options in the input file. tried but ExtractData will not run correctly
 		// for DRC2016 Nta = 1600
 		// Feb 6th, 2017. Change 1600 to Nta. (By Frank)
-		if (Nta!=0) {
+		if (Nta-0.0<1e-16) {
+			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phin/Vth);
+		}
+		else {
 			// Modification: open port for input nwn (width of exponential distribution, default=1) and E_peakn (peak position of exponential distribution, default=0.14 for electron)
 			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
 				fermiIntegralHalf(-phin/Vth) + Nta * exp(-(phin - E_peakn)/(nwn * Vth))*Vth*ChargeQ*log1p(exp((phin - E_peakn)/(nwn * Vth)));
-		}
-		else {
-		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phin/Vth);
 		}
 //		std::cout << " electronDensity = " << electronDensity << std::endl;
 //		std::cout << " fermi Integral half = " << fermiIntegralHalf(-phin/Vth) << std::endl;
@@ -140,15 +138,15 @@ double Material::holeDensity(double phip) {
 	switch (dimension) {
 	case 2:
 	{
-		if (E_CNLp==0) {
+		if (Ntd-0.0<1e-16) {
 			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
 		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
 		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
 		else {
-		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive.
+		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. Change 10 to Ntd.
 			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
-					10 * Vth * log1p(exp((bandGap/2 + E_CNLp - phip)/Vth)) / t2D;
+					Ntd * Vth * log1p(exp((bandGap/2 + E_CNLp - phip)/Vth)) / t2D;
 		}
 	}
 	break;
@@ -156,13 +154,13 @@ double Material::holeDensity(double phip) {
 	{
 		//TODO: add Ntd options in the input file. tried but ExtractData will not run correctly
 		// Feb 14th, 2017. Consider Ntd. (By Frank)
-		if (Ntd!=0) {
+		if (Ntd-0.0<1e-16) {
+		        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth);
+		}
+		else {
 			// Modification: open port for input nwp (width of exponential distribution, default=1) and E_peakp (peak position of exponential distribution, default=0 for hole)
         		holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
         			fermiIntegralHalf(-phip/Vth) + Ntd*exp(-(phip-E_peakp)/(nwp*Vth))*Vth*ChargeQ*log1p(exp((phip-E_peakp)/(nwp*Vth)));
-		}
-		else {
-		        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth);
 		}
 	}
 	break;
