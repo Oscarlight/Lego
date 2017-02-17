@@ -13,10 +13,11 @@ Material::Material() {
  * Constructor using default T
  */
 Material::Material(int _index, int _type, const char *pname, double _dielectricConstant, double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
-				  double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV) : \
+			double _t2D, double _Nd, double _Na, double _Nta, double _Ntd, double _mcEff, double _mvEff, double _E_CNLn, double _E_CNLp, int _gvC, int _gvV, \
+			double _nwn, double _nwp, double _E_peakn, double _E_peakp) : \
 				  index(_index), type(_type),name(pname), dieleY(_dielectricConstant), dieleX(_dieleIP), \
-				  electronAffinity(_electronAffinity),bandGap(_bandGap),dimension(_dimension),
-				  gvC(_gvC),gvV(_gvV) {
+				  electronAffinity(_electronAffinity),bandGap(_bandGap),dimension(_dimension), E_CNLn(_E_CNLn), E_CNLp(_E_CNLp), \
+				  gvC(_gvC),gvV(_gvV),nwn(_nwn),nwp(_nwp),E_peakn(_E_peakn),E_peakp(_E_peakp) {
 	    	std::cout << "Initialize Material " << pname  << std::endl;
 
 	    	if (dimension == 2 && _t2D == 0)
@@ -26,20 +27,21 @@ Material::Material(int _index, int _type, const char *pname, double _dielectricC
 	    	t2D = _t2D * cmNL(1E-7); // origin: nm
 	    	Nd = _Nd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
 	    	Na = _Na * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
-	    	Nta = 0; // Acceptor-like trap density (same unit as Nd)
-	    	Ntd = 0;
-//	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
-//	    	Ntd = _Ntd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
+	    	//Nta = 0; // Acceptor-like trap density (same unit as Nd)
+	    	//Ntd = 0;
+		// Feb 6th, 2017. Uncomment Nta and Ntd lines and comment Nta=0 and Ntd=0 lines. (By Frank)
+	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
+	    	Ntd = _Ntd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
 	        mcEff=_mcEff*m0;
 	        mvEff=_mvEff*m0;
 }
 
-Material::Material(double _T, int _index, int _type, const char *pname, double _dielectricConstant, \
-				  double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
-				  double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV) : Params(_T) {\
-            Material(_index, _type, pname, _dielectricConstant, _dieleIP, _electronAffinity, _bandGap, _dimension, _t2D, \
-					         _Nd, _Na, _mcEff, _mvEff, _gvC, _gvV);
-		    std::cout << "Initialize Material " << pname << " with T = " << _T << std::endl;
+Material::Material(double _T, int _index, int _type, const char *pname, double _dielectricConstant, double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
+			double _t2D, double _Nd, double _Na, double _Nta, double _Ntd, double _mcEff, double _mvEff, double _E_CNLn, double _E_CNLp, int _gvC, int _gvV, \
+			double _nwn, double _nwp, double _E_peakn, double _E_peakp) : Params(_T)  {
+		Material(_index, _type, pname, _dielectricConstant, _dieleIP, _electronAffinity, _bandGap, _dimension, _t2D, \
+					         _Nd, _Na, _Ntd, _Nta, _mcEff, _mvEff, _E_CNLn, _E_CNLp, _gvC, _gvV, _nwn, _nwp, _E_peakn, _E_peakp);
+		std::cout << "Initialize Material " << pname << " with T = " << _T << std::endl;
 }
 
 
@@ -53,10 +55,16 @@ double Material::electronDensity(double phin) {
 	switch (dimension) {
 	case 2:
 	{
-		electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
+		if (E_CNLn==0) {
+			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
+		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
-//		electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
-//				10 * Vth * log1p(exp((bandGap/2 - phin)/Vth)) / t2D;
+		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
+		else {
+		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive.
+			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
+					10 * Vth * log1p(exp((bandGap/2 - E_CNLn - phin)/Vth)) / t2D;
+		}
 	}
 	break;
 	case 3:
@@ -64,10 +72,15 @@ double Material::electronDensity(double phin) {
 		//TODO: IMPORTANT!! ALWAYS get Nta = 0, do make clean, problem solved!!
 		//TODO: add Nta options in the input file. tried but ExtractData will not run correctly
 		// for DRC2016 Nta = 1600
-//		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-//				fermiIntegralHalf(-phin/Vth) + 1600 * exp(-(phin - 0.14)/(1 * Vth))*Vth*ChargeQ*log1p(exp((phin - 0.14)/(1 * Vth)));
-		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
-						fermiIntegralHalf(-phin/Vth);
+		// Feb 6th, 2017. Change 1600 to Nta. (By Frank)
+		if (Nta!=0) {
+			// Modification: open port for input nwn (width of exponential distribution, default=1) and E_peakn (peak position of exponential distribution, default=0.14 for electron)
+			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
+				fermiIntegralHalf(-phin/Vth) + Nta * exp(-(phin - E_peakn)/(nwn * Vth))*Vth*ChargeQ*log1p(exp((phin - E_peakn)/(nwn * Vth)));
+		}
+		else {
+		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phin/Vth);
+		}
 //		std::cout << " electronDensity = " << electronDensity << std::endl;
 //		std::cout << " fermi Integral half = " << fermiIntegralHalf(-phin/Vth) << std::endl;
 //		std::cout << " Nc = " << 2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) << std::endl;
@@ -127,19 +140,30 @@ double Material::holeDensity(double phip) {
 	switch (dimension) {
 	case 2:
 	{
-		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+		if (E_CNLp==0) {
+			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
-//		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
-//				10 * Vth * log1p(exp((bandGap/2 - phip)/Vth)) / t2D;
+		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
+		else {
+		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive.
+			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
+					10 * Vth * log1p(exp((bandGap/2 + E_CNLp - phip)/Vth)) / t2D;
+		}
 	}
 	break;
 	case 3:
 	{
 		//TODO: add Ntd options in the input file. tried but ExtractData will not run correctly
-//        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-//        		fermiIntegralHalf(-phip/Vth) + Ntd*exp(-phip/Vth)*Vth*ChargeQ*log1p(exp(phip/Vth));
-        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
-         		fermiIntegralHalf(-phip/Vth);
+		// Feb 14th, 2017. Consider Ntd. (By Frank)
+		if (Ntd!=0) {
+			// Modification: open port for input nwp (width of exponential distribution, default=1) and E_peakp (peak position of exponential distribution, default=0 for hole)
+        		holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
+        			fermiIntegralHalf(-phip/Vth) + Ntd*exp(-(phip-E_peakp)/(nwp*Vth))*Vth*ChargeQ*log1p(exp((phip-E_peakp)/(nwp*Vth)));
+		}
+		else {
+		        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth);
+		}
 	}
 	break;
 	default:
@@ -156,7 +180,8 @@ double Material::holeDensity(double phip) {
  */
 double Material::chargeDensity(double phin, double phip)
 {
-    return ( Nd - Na + holeDensity(phip) - electronDensity(phin) );
+// Shouldn't include Ntd and Nta in charge density calculation
+    return ( Nd - Na  + holeDensity(phip) - electronDensity(phin) );
 };
 
 /**
@@ -167,6 +192,7 @@ double Material::fixChargeDensity()
 	if (type != Dielectric) {
 		std::cerr << " Error: fixChargeDensity() method is only defined for insulator" << std::endl;
 	}
+// Shouldn't include Ntd and Nta in fix charge density calculation
     return ( Nd - Na );
 };
 
