@@ -77,7 +77,7 @@ double Material::electronDensity(double phin) {
 		else {
 			// Modification: open port for input nwn (width of exponential distribution, default=1) and E_peakn (peak position of exponential distribution, default=0.14 for electron)
 			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-				fermiIntegralHalf(-phin/Vth) + Nta * exp(-(phin - E_peakn)/(nwn * Vth))*Vth*ChargeQ*log1p(exp((phin - E_peakn)/(nwn * Vth)));
+				fermiIntegralHalf(-phin/Vth) + Nta * exp(-(phin - E_peakn)/(nwn * Vth))*(nwn*Vth)*ChargeQ*log1p(exp((phin - E_peakn)/(nwn * Vth)));
 		}
 //		std::cout << " electronDensity = " << electronDensity << std::endl;
 //		std::cout << " fermi Integral half = " << fermiIntegralHalf(-phin/Vth) << std::endl;
@@ -160,7 +160,7 @@ double Material::holeDensity(double phip) {
 		else {
 			// Modification: open port for input nwp (width of exponential distribution, default=1) and E_peakp (peak position of exponential distribution, default=0 for hole)
         		holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-        			fermiIntegralHalf(-phip/Vth) + Ntd*exp(-(phip-E_peakp)/(nwp*Vth))*Vth*ChargeQ*log1p(exp((phip-E_peakp)/(nwp*Vth)));
+        			fermiIntegralHalf(-phip/Vth) + Ntd*exp(-(phip-E_peakp)/(nwp*Vth))*(nwp*Vth)*ChargeQ*log1p(exp((phip-E_peakp)/(nwp*Vth)));
 		}
 	}
 	break;
