@@ -13,10 +13,11 @@ Material::Material() {
  * Constructor using default T
  */
 Material::Material(int _index, int _type, const char *pname, double _dielectricConstant, double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
-				  double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV) : \
+			double _t2D, double _Nd, double _Na, double _Nta, double _Ntd, double _mcEff, double _mvEff, double _E_CNLn, double _E_CNLp, int _gvC, int _gvV, \
+			double _Wta, double _Wtd, double _E_peakn, double _E_peakp) : \
 				  index(_index), type(_type),name(pname), dieleY(_dielectricConstant), dieleX(_dieleIP), \
-				  electronAffinity(_electronAffinity),bandGap(_bandGap),dimension(_dimension),
-				  gvC(_gvC),gvV(_gvV) {
+				  electronAffinity(_electronAffinity),bandGap(_bandGap),dimension(_dimension), E_CNLn(_E_CNLn), E_CNLp(_E_CNLp), \
+				  gvC(_gvC),gvV(_gvV),Wta(_Wta),Wtd(_Wtd),E_peakn(_E_peakn),E_peakp(_E_peakp) {
 	    	std::cout << "Initialize Material " << pname  << std::endl;
 
 	    	if (dimension == 2 && _t2D == 0)
@@ -26,20 +27,19 @@ Material::Material(int _index, int _type, const char *pname, double _dielectricC
 	    	t2D = _t2D * cmNL(1E-7); // origin: nm
 	    	Nd = _Nd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
 	    	Na = _Na * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
-	    	Nta = 0; // Acceptor-like trap density (same unit as Nd)
-	    	Ntd = 0;
-//	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
-//	    	Ntd = _Ntd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
+		// Feb 6th, 2017. Uncomment Nta and Ntd lines and comment Nta=0 and Ntd=0 lines. (By Frank)
+	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
+	    	Ntd = _Ntd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
 	        mcEff=_mcEff*m0;
 	        mvEff=_mvEff*m0;
 }
 
-Material::Material(double _T, int _index, int _type, const char *pname, double _dielectricConstant, \
-				  double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
-				  double _t2D, double _Nd, double _Na, double _mcEff, double _mvEff, int _gvC, int _gvV) : Params(_T) {\
-            Material(_index, _type, pname, _dielectricConstant, _dieleIP, _electronAffinity, _bandGap, _dimension, _t2D, \
-					         _Nd, _Na, _mcEff, _mvEff, _gvC, _gvV);
-		    std::cout << "Initialize Material " << pname << " with T = " << _T << std::endl;
+Material::Material(double _T, int _index, int _type, const char *pname, double _dielectricConstant, double _dieleIP, double _electronAffinity, double _bandGap, int _dimension, \
+			double _t2D, double _Nd, double _Na, double _Nta, double _Ntd, double _mcEff, double _mvEff, double _E_CNLn, double _E_CNLp, int _gvC, int _gvV, \
+			double _Wta, double _Wtd, double _E_peakn, double _E_peakp) : Params(_T)  {
+		Material(_index, _type, pname, _dielectricConstant, _dieleIP, _electronAffinity, _bandGap, _dimension, _t2D, \
+					         _Nd, _Na, _Ntd, _Nta, _mcEff, _mvEff, _E_CNLn, _E_CNLp, _gvC, _gvV, _Wta, _Wtd, _E_peakn, _E_peakp);
+		std::cout << "Initialize Material " << pname << " with T = " << _T << std::endl;
 }
 
 
@@ -53,10 +53,16 @@ double Material::electronDensity(double phin) {
 	switch (dimension) {
 	case 2:
 	{
-		electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
+		if (Nta-0.0<1e-16) {
+			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
+		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
-//		electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
-//				10 * Vth * log1p(exp((bandGap/2 - phin)/Vth)) / t2D;
+		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
+		else {
+		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. Change 10 to Nta.
+			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
+					Nta * Vth * log1p(exp((bandGap/2 - E_CNLn - phin)/Vth)) / t2D;
+		}
 	}
 	break;
 	case 3:
@@ -64,10 +70,24 @@ double Material::electronDensity(double phin) {
 		//TODO: IMPORTANT!! ALWAYS get Nta = 0, do make clean, problem solved!!
 		//TODO: add Nta options in the input file. tried but ExtractData will not run correctly
 		// for DRC2016 Nta = 1600
-//		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-//				fermiIntegralHalf(-phin/Vth) + 1600 * exp(-(phin - 0.14)/(1 * Vth))*Vth*ChargeQ*log1p(exp((phin - 0.14)/(1 * Vth)));
-		electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
-						fermiIntegralHalf(-phin/Vth);
+		// Feb 6th, 2017. Change 1600 to Nta. (By Frank)
+		if (Nta-0.0<1e-16) {
+			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phin/Vth);
+		}
+		else {
+			// Modification: open port for input Wta (width of exponential distribution, default=0.026eV) and E_peakn (peak position of exponential distribution, default=0eV for electron)
+			// IMPORTANT MODIFICATION: change the calculation of trap density. (Mar 8th, 2017)
+			// The calculation is done by direct integral using MATLAB and fit the result into polynomial (5th order). The variety range is:
+			// Wta = 0.026 to 1 eV.        E_peakn-phin = -1 to 1 eV.     E_peakn = Ec-Epeak
+			double En = E_peakn-phin;   // En = Efn-Epeak
+			if (fabs(En)>1)
+				cout<<"WARNING: The difference between E_peakn and Efn is too large, which may cause inaccuracy."<<endl;
+			double n_trap = -0.0002727 + 0.08858*En + 0.9995*Wta + 0.004625*pow(En,2) + 2.973*En*Wta + 0.01115*pow(Wta,2) - 0.4243*pow(En,3) - 0.01151*pow(En,2)*Wta - 2.744*En*pow(Wta,2)
+					- 0.01536*pow(Wta,3) - 0.007636*pow(En,4) - 2.475*pow(En,3)*Wta - 0.05922*pow(En,2)*pow(Wta,2) - 4.608*En*pow(Wta,3) + 0.06716*pow(Wta,4)
+					+ 0.3877*pow(En,5) + 0.03381*pow(En,4)*Wta + 4.877*pow(En,3)*pow(Wta,2) + 0.05508*pow(En,2)*pow(Wta,3) + 5.089*En*pow(Wta,4) - 0.1897*pow(Wta,5);
+			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phin/Vth) + n_trap;
+			//	+ Nta * exp(-(phin - E_peakn)/(nwn * Vth))*(nwn*Vth)*ChargeQ*log1p(exp((phin - E_peakn)/(nwn * Vth)));
+		}
 //		std::cout << " electronDensity = " << electronDensity << std::endl;
 //		std::cout << " fermi Integral half = " << fermiIntegralHalf(-phin/Vth) << std::endl;
 //		std::cout << " Nc = " << 2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) << std::endl;
@@ -127,19 +147,39 @@ double Material::holeDensity(double phip) {
 	switch (dimension) {
 	case 2:
 	{
-		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+		if (Ntd-0.0<1e-16) {
+			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
-//		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
-//				10 * Vth * log1p(exp((bandGap/2 - phip)/Vth)) / t2D;
+		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
+		else {
+		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. Change 10 to Ntd.
+			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
+					Ntd * Vth * log1p(exp((bandGap/2 + E_CNLp - phip)/Vth)) / t2D;
+		}
 	}
 	break;
 	case 3:
 	{
 		//TODO: add Ntd options in the input file. tried but ExtractData will not run correctly
-//        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) *
-//        		fermiIntegralHalf(-phip/Vth) + Ntd*exp(-phip/Vth)*Vth*ChargeQ*log1p(exp(phip/Vth));
-        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * \
-         		fermiIntegralHalf(-phip/Vth);
+		// Feb 14th, 2017. Consider Ntd. (By Frank)
+		if (Ntd-0.0<1e-16) {
+		        holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth);
+		}
+		else {
+			// Modification: open port for input Wtd (width of exponential distribution, default=0.026) and E_peakp (peak position of exponential distribution, default=0 for hole)
+			// IMPORTANT MODIFICATION: change the calculation of trap density. (Mar 8th, 2017)
+			// The calculation is done by direct integral using MATLAB and fit the result into polynomial (5th order). The variety range is:
+			// Wtd = 0.026 to 1 eV.        E_peakp-phip = -1 to 1 eV.     E_peakp = Epeak-Ev
+			double Ep = phip-E_peakp;   // Ep = Efp-Epeak
+			if (fabs(Ep)>1)
+				cout<<"WARNING: The difference between E_peakp and Efp is too large, which may cause inaccuracy."<<endl;
+			double p_trap = -0.0002727 + 0.08858*Ep + 0.9995*Wtd + 0.004625*pow(Ep,2) + 2.973*Ep*Wtd + 0.01115*pow(Wtd,2) - 0.4243*pow(Ep,3) - 0.01151*pow(Ep,2)*Wtd - 2.744*Ep*pow(Wtd,2)
+					- 0.01536*pow(Wtd,3) - 0.007636*pow(Ep,4) - 2.475*pow(Ep,3)*Wtd - 0.05922*pow(Ep,2)*pow(Wtd,2) - 4.608*Ep*pow(Wtd,3) + 0.06716*pow(Wtd,4)
+					+ 0.3877*pow(Ep,5) + 0.03381*pow(Ep,4)*Wtd + 4.877*pow(Ep,3)*pow(Wtd,2) + 0.05508*pow(Ep,2)*pow(Wtd,3) + 5.089*Ep*pow(Wtd,4) - 0.1897*pow(Wtd,5);
+        		holeDensity=2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth) + p_trap;
+				// + Ntd*exp(-(phip-E_peakp)/(nwp*Vth))*(nwp*Vth)*ChargeQ*log1p(exp((phip-E_peakp)/(nwp*Vth)));
+		}
 	}
 	break;
 	default:
@@ -156,7 +196,8 @@ double Material::holeDensity(double phip) {
  */
 double Material::chargeDensity(double phin, double phip)
 {
-    return ( Nd - Na + holeDensity(phip) - electronDensity(phin) );
+// Shouldn't include Ntd and Nta in charge density calculation
+    return ( Nd - Na  + holeDensity(phip) - electronDensity(phin) );
 };
 
 /**
@@ -167,6 +208,7 @@ double Material::fixChargeDensity()
 	if (type != Dielectric) {
 		std::cerr << " Error: fixChargeDensity() method is only defined for insulator" << std::endl;
 	}
+// Shouldn't include Ntd and Nta in fix charge density calculation
     return ( Nd - Na );
 };
 

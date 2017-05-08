@@ -38,14 +38,15 @@ std::map<std::string, Material> Run2D::readInput(int argc, char** argv) {
 	int i = 0;
 	for (std::map<std::string, std::vector<double>>::iterator it = io2D.matMap.begin();
 			it  != io2D.matMap.end(); ++it) {
+		// Add it->second[13] to [20] because of adding new parameters. (By Frank)
 		Material t(i, (int)round(it->second[0]), it->first.c_str(), it->second[1], it->second[2],
 				it->second[3], it->second[4], (int)round(it->second[5]), it->second[6],
-				it->second[7], it->second[8], it->second[9], it->second[10],
-				it->second[11], it->second[12]);
+				it->second[7], it->second[8], it->second[9], it->second[10], it->second[11], 
+				it->second[12], it->second[13], it->second[14], it->second[15], it->second[16], it->second[17], it->second[18], it->second[19], it->second[20]);
 //		std::cout << i << "," << (int)round(it->second[0]) << "," << it->first.c_str() << "," << it->second[1] << ","
 //				  << it->second[2] << "," << it->second[3] << "," << it->second[4] << "," << (int)round(it->second[5]) << "," << it->second[6]
 //				  << "," << it->second[7] << "," << it->second[8] << "," << it->second[9] << "," << it->second[10] << "," << it->second[11] << ","
-// 		          << it->second[12] << std::endl;
+//		          << it->second[12] << "," << it->second[13] << "," << it->second[14] << std::endl;
 		matLib.insert(std::pair<std::string, Material>(it->first, t));
 	}
 
