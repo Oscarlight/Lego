@@ -118,13 +118,29 @@ void Run1D::runPoisson1D(int argc, char** argv){
 					data.bandAndCharge(p1D, dev1D);
 					if (io.calcuIV) {
 						// current
-						data.bASemiOnly();
-						double iJ = t.interTunnel2DOFP(data.cBSemi[1],
-								data.vBSemi[1], data.cBSemi[0], data.vBSemi[0],
-								data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
-						double lJ = t.likeTunnel2DOFP(data.cBSemi[1],
-								data.vBSemi[1], data.cBSemi[0], data.vBSemi[0],
-								data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
+						int num = data.bASemiOnly();
+						int m = 0;
+						int n = 1;
+						for (int i=0; i<num; i++) {
+							// Only for p-type device
+							//std::cout<<"Semi phin of ["<<i<<"] layer is:"<<data.phin[i]<<endl;
+							//std::cout<<"Semi phip of ["<<i<<"] layer is:"<<data.phip[i]<<endl;
+							//std::cout<<"Semi cBSemi of ["<<i<<"] layer is:"<<data.cBSemi[i]<<endl;
+							//std::cout<<"Semi vBSemi of ["<<i<<"] layer is:"<<data.vBSemi[i]<<endl;
+							double judge = (data.cBSemi[i]+data.vBSemi[i])*(data.cBSemi[i+1]+data.vBSemi[i+1]);
+							if (judge < 0) {
+								m=i;
+								n=i+1;
+								break;
+							}
+						}
+						//std::cout<<"m = "<<m<<", n = "<<n<<endl;
+						double iJ = t.interTunnel2DOFP(data.cBSemi[n],
+								data.vBSemi[n], data.cBSemi[m], data.vBSemi[m],
+								data.fLnSemi[m] - data.fLnSemi[n], 1E-3);
+						double lJ = t.likeTunnel2DOFP(data.cBSemi[n],
+								data.vBSemi[n], data.cBSemi[m], data.vBSemi[m],
+								data.fLnSemi[m] - data.fLnSemi[n], 1E-3);
 
 						// Store current in InputOut
 						std::vector<double> current;
