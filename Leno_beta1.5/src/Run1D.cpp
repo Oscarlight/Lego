@@ -121,14 +121,27 @@ void Run1D::runPoisson1D(int argc, char** argv){
 						int num = data.bASemiOnly();
 						int m = 0;
 						int n = 1;
+						//cout<<"total number is:"<<num<<endl;
+						//for (int i=0; i<num; i++) {
+							//std::cout<<"Semi phin of ["<<i<<"] layer is:"<<data.phin[i]<<endl;
+							//std::cout<<"Semi phip of ["<<i<<"] layer is:"<<data.phip[i]<<endl;
+						//	std::cout<<"Semi cBSemi of ["<<i<<"] layer is:"<<data.cBSemi[i]<<endl;
+						//	std::cout<<"Semi vBSemi of ["<<i<<"] layer is:"<<data.vBSemi[i]<<endl;
+							//std::cout<<"The "<<i<<"th material :"<<endl;
+							//std::cout<<"getTAArray: "<<dev1D.getTArray()<<endl;
+							//std::cout<<"getMaterialList.index:  "<<dev1D.getMaterialList()[i].index<<endl;
+						//}
 						for (int i=0; i<num; i++) {
-							// Only for p-type device
 							//std::cout<<"Semi phin of ["<<i<<"] layer is:"<<data.phin[i]<<endl;
 							//std::cout<<"Semi phip of ["<<i<<"] layer is:"<<data.phip[i]<<endl;
 							//std::cout<<"Semi cBSemi of ["<<i<<"] layer is:"<<data.cBSemi[i]<<endl;
 							//std::cout<<"Semi vBSemi of ["<<i<<"] layer is:"<<data.vBSemi[i]<<endl;
-							double judge = (data.cBSemi[i]+data.vBSemi[i])*(data.cBSemi[i+1]+data.vBSemi[i+1]);
-							if (judge < 0) {
+							double judgecB = data.cBSemi[i]-data.cBSemi[i+1];
+							double judgevB = data.vBSemi[i]-data.vBSemi[i+1];
+							//std::cout<<"The "<<i<<"th material :"<<endl;
+							//std::cout<<"getTAArray: "<<dev1D.getTArray()<<endl;
+							//std::cout<<"getMaterialList.index:  "<<dev1D.getMaterialList()[i].index<<endl;
+							if ((abs(judgecB) > 0.5) || (abs(judgevB) > 0.5 )) {
 								m=i;
 								n=i+1;
 								break;
