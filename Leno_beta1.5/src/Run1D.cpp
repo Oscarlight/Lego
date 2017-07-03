@@ -121,33 +121,38 @@ void Run1D::runPoisson1D(int argc, char** argv){
 						int num = data.bASemiOnly();
 						int m = 0;
 						int n = 1;
-						//cout<<"total number is:"<<num<<endl;
+						//std::cout<<"total number is:"<<num<<endl;
 						//for (int i=0; i<num; i++) {
 							//std::cout<<"Semi phin of ["<<i<<"] layer is:"<<data.phin[i]<<endl;
 							//std::cout<<"Semi phip of ["<<i<<"] layer is:"<<data.phip[i]<<endl;
 						//	std::cout<<"Semi cBSemi of ["<<i<<"] layer is:"<<data.cBSemi[i]<<endl;
 						//	std::cout<<"Semi vBSemi of ["<<i<<"] layer is:"<<data.vBSemi[i]<<endl;
-							//std::cout<<"The "<<i<<"th material :"<<endl;
+						//	std::cout<<"The "<<i<<"th material :"<<endl;
 							//std::cout<<"getTAArray: "<<dev1D.getTArray()<<endl;
-							//std::cout<<"getMaterialList.index:  "<<dev1D.getMaterialList()[i].index<<endl;
+						//	vector<Material> vec = dev1D.getMaterialList();
+							//std::cout<<"getMaterialList.index:  "<<vec[i].index<<endl;
+							//std::cout<<"getMaterialList.type:  "<<vec[i].type<<endl;
+						//	std::cout<<"getMaterialList.name:  "<<vec[i].name<<endl;
+						//	std::cout<<"fLn of ["<<i<<"] layer is: "<<data.fLnSemi[i]<<endl;
+						//	std::cout<<"fLp of ["<<i<<"] layer is: "<<data.fLpSemi[i]<<endl;
 						//}
 						for (int i=0; i<num; i++) {
 							//std::cout<<"Semi phin of ["<<i<<"] layer is:"<<data.phin[i]<<endl;
 							//std::cout<<"Semi phip of ["<<i<<"] layer is:"<<data.phip[i]<<endl;
 							//std::cout<<"Semi cBSemi of ["<<i<<"] layer is:"<<data.cBSemi[i]<<endl;
-							//std::cout<<"Semi vBSemi of ["<<i<<"] layer is:"<<data.vBSemi[i]<<endl;
-							double judgecB = data.cBSemi[i]-data.cBSemi[i+1];
-							double judgevB = data.vBSemi[i]-data.vBSemi[i+1];
-							//std::cout<<"The "<<i<<"th material :"<<endl;
-							//std::cout<<"getTAArray: "<<dev1D.getTArray()<<endl;
-							//std::cout<<"getMaterialList.index:  "<<dev1D.getMaterialList()[i].index<<endl;
-							if ((abs(judgecB) > 0.5) || (abs(judgevB) > 0.5 )) {
+							//std::cout<<"Semi vBSemi of ["<<i<<"] layer is:"<<data.vBSemi[i]<<endl;	
+						//	double judgecB = data.cBSemi[i]-data.cBSemi[i+1];
+						//	double judgevB = data.vBSemi[i]-data.vBSemi[i+1];
+						//	std::cout<<"judgecB = "<<judgecB<<endl;
+						//	std::cout<<"judgevB = "<<judgevB<<endl;
+						//	if ((abs(judgecB) > 0.5) || (abs(judgevB) > 0.5 )) {
+							if (data.fLnSemi[i] != data.fLnSemi[i+1]) {
 								m=i;
 								n=i+1;
 								break;
 							}
 						}
-						//std::cout<<"m = "<<m<<", n = "<<n<<endl;
+						std::cout<<"The tunnelling happens between m = "<<m<<" and n = "<<n<<endl;
 						double iJ = t.interTunnel2DOFP(data.cBSemi[n],
 								data.vBSemi[n], data.cBSemi[m], data.vBSemi[m],
 								data.fLnSemi[m] - data.fLnSemi[n], 1E-3);
