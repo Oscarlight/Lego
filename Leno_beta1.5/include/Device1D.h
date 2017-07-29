@@ -37,7 +37,7 @@ public:
 	 * input: material, thicknes (nm), ny, (Optional)boundary type
 	 */
 	void startWith(Material m, double _t, int _n, int bottomBoundaryType);
-	void add(Material m, double _t, int _n); // add 3D material, thickness, how may points inside. If 2D, ignore t, and n
+	void add(Material m, double _t, int _n); // add 3D material, thickness, how may points inside. If 2D, ignore t and n
 	void endWith(Material m, double _t, int _n, int topBoundaryType);
 	void matrixDiff();
 
