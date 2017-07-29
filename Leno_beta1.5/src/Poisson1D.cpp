@@ -15,7 +15,7 @@ Poisson1D::Poisson1D(Device1D _dev1D) {
 	bCArray = zeros(dev1D.getSumPoint());
 	Vtg = 0; Vbg = 0; WFt = 0; WFb = 0;
 	phin = dev1D.getPnIArray();
-	phip = dev1D.getPpIArray(); // Seems there was a error here before. Should be getPpIArry() for phip instead of getPnIArry()
+	phip = dev1D.getPpIArray(); // Seems there was a typo here before. Should be getPpIArry() for phip instead of getPnIArry()
 	// std::cout << "Default constructor of Poisson1D is called." << std::endl;
 }
 

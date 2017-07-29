@@ -10,18 +10,18 @@
 	Dimension = 3
 	Monolayer_Thickness = 0 /* ignore it for 3D material */
 	/* ignore the following for Dielectric type */
-	Nd = 0 		/* donor density 1/cm^3 */
-	Na = 0 		/* Acceptor density 1/cm^3 */
-	Nta = 0
-	Ntd = 0
+	Nd = 0 		/* donor density 1/nm^3 */
+	Na = 0 		/* Acceptor density 1/nm^3 */
 	mc_eff = 0	/* electron effective mass */
 	mv_eff = 0	/* hole effective mass */
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
 
@@ -37,18 +37,19 @@
 	Nd = 0 		/* donor density 1/cm^3 */
 	Na = 0 		/* Acceptor density 1/cm^3 */
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0	/* electron effective mass */
 	mv_eff = 0	/* hole effective mass */
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
 
 [SiO2]
 	Type = Dielectric
@@ -61,18 +62,18 @@
 	Nd = 0 		/* donor density 1/cm^3 */
 	Na = 0 		/* Acceptor density 1/cm^3 */
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0	/* electron effective mass */
 	mv_eff = 0	/* hole effective mass */
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
-	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */	/* width of 3D trap exponential distribution, default=1 */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
 
 [SiO2_negativeFixCharge]
 	Type = Dielectric
@@ -85,16 +86,16 @@
 	Nd = 0 		/* donor density 1/cm^3 */
 	Na = 0 		/* Acceptor density 1/cm^3 */
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0	/* electron effective mass */
 	mv_eff = 0	/* hole effective mass */
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
 
@@ -107,20 +108,21 @@
 	Dimension = 3
 	Monolayer_Thickness = 0 /* ignore it for 3D material */
 	Nd = 0 		/* Positive fix charge for insulator (1/nm^3  -> 1E21 1/cm^3) */
-	Na = 0.2 /* 0.2 for 1 nm thickness*/  /* Negative fix charge for insulator (1/nm^3  -> 1E21 1/cm^3) */
+	Na = 0.2 	/* 0.2 for 1 nm thickness*/  /* Negative fix charge for insulator (1/nm^3  -> 1E21 1/cm^3) */
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0	/* electron effective mass */
 	mv_eff = 0	/* hole effective mass */
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
 
 [Ion_neutral]
 	Type = Dielectric
@@ -133,23 +135,23 @@
 	Nd = 0 		/* Positive fix charge for insulator (1/nm^3  -> 1E21 1/cm^3) */
 	Na = 0 		/* Negative fix charge for insulator (1/nm^3  -> 1E21 1/cm^3) */
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0	/* electron effective mass */
 	mv_eff = 0	/* hole effective mass */
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 0	/* conduction band valley degeneracy */
 	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
 
 
 [vdWGap]
 	Type = Dielectric
-	er_y = 5 /* standard: 1*/
+	er_y = 1
 	er_x = 1
 	Electron_Affinity = 4
 	Bandgap = 2
@@ -158,19 +160,18 @@
 	Nd = 0 
 	Na = 0 
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0
 	mv_eff = 0
+	gv_of_Ec = 0
+	gv_of_Ev = 0
+	Nta = 0
+	Ntd = 0
 	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	gv_of_Ec = 0	/* conduction band valley degeneracy */
-	gv_of_Ev = 0	/* valence band valley degeneracy */
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
-
 
 [WSe2_2D]
 	/* P-type */
@@ -185,97 +186,44 @@
 	Nd = 0 
 	Na = 0 
         /* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0.3
 	mv_eff = 0.4
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 2
 	gv_of_Ev = 2
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0		/* For N-type material */
+	Ntd = 0		/* For P-type material */
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
 
-
-[SnSe2_2D]
-	/* N-type */
+[WSe2_2D_Dit]
+	/* P-type */
 	/* changed on 5/6: er_y: 5 -> 1 && Monolayer_Thickness: 0.5 -> 0.1 */
 	Type = Semiconductor
 	er_y = 1
 	er_x = 7
-	Electron_Affinity = 4.6 /* Changed from 5.1 on Jan 19, 17 */
-	Bandgap = 1
+	Electron_Affinity = 4
+	Bandgap = 1.3
 	Dimension = 2
 	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
 	Nd = 0 
 	Na = 0 
-	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
+        /* ignore the following for Dielectric type */
 	mc_eff = 0.3
 	mv_eff = 0.4
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 2
 	gv_of_Ev = 2
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
-	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
-
-
-/* Added on Jan 19, 17 */
-[BP_2D]
-	Type = Semiconductor
-	er_y = 1
-	er_x = 7
-	Electron_Affinity = 3.6
-	Bandgap = 0.8
-	Dimension = 2
-	Monolayer_Thickness = 0.2
-	Nd = 0
-	Na = 0
-	Nta = 0
-	Ntd = 0
-	mc_eff = 0.6
-	mv_eff = 0.6
+	Nta = 0		/* For N-type material */
+	Ntd = 6e-2		/* For P-type material */
 	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	gv_of_Ec = 2
-	gv_of_Ev = 2
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
 	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
-
-
-[SnSe2_3D]
-	/* N-type */
-	Type = Semiconductor
-	er_y = 5
-	er_x = 7
-	Electron_Affinity = 5.1
-	Bandgap = 1
-	Dimension = 3
-	Monolayer_Thickness = 0.5 /* ignore it for 3D material */
-	Nd = 0.06 	/* DRC2016 0.06 */
-	Na = 0 
-	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
-	mc_eff = 0.3
-	mv_eff = 0.4
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	gv_of_Ec = 2
-	gv_of_Ev = 2
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
-	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
-
 
 [WSe2_3D]
 	/* P-type */
@@ -286,19 +234,222 @@
 	Bandgap = 1.3
 	Dimension = 3
 	Monolayer_Thickness = 0.5 /* ignore it for 3D material */
-	Nd = 0		/* 0.02 -> 0.03 */
+	Nd = 0 /* 0.02 -> 0.03 */
 	Na = 0 
 	/* ignore the following for Dielectric type */
-	Nta = 0
-	Ntd = 0
 	mc_eff = 0.2
 	mv_eff = 0.3
-	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
-	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
 	gv_of_Ec = 2
 	gv_of_Ev = 2
-	nwn = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
-	nwp = 1		/* (Only for 3D) width of 3D trap exponential distribution, default=1 */
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
 	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
-	E_peakp = 0.0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
 
+[SnSe2_2D]
+	/* N-type */
+	/* changed on 5/6: er_y: 5 -> 1 && Monolayer_Thickness: 0.5 -> 0.1 */
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 5.1
+	Bandgap = 1
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	Nd = 0 
+	Na = 0 
+	/* ignore the following for Dielectric type */
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+	Nta = 0			/* For N-type material */
+	Ntd = 0			/* For P-type material */
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) acceptor-like (n-type) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) donor-like (p-type) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+[SnSe2_2D_Dit]
+	/* N-type */
+	/* changed on 5/6: er_y: 5 -> 1 && Monolayer_Thickness: 0.5 -> 0.1 */
+	Type = Semiconductor
+	er_y = 1
+	er_x = 7
+	Electron_Affinity = 5.1
+	Bandgap = 1
+	Dimension = 2
+	Monolayer_Thickness = 0.1 /* ignore it for 3D material */
+	Nd = 0 
+	Na = 0 
+	/* ignore the following for Dielectric type */
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+	Nta = 1e-1			/* For N-type material */
+	Ntd = 0			/* For P-type material */
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) acceptor-like (n-type) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) donor-like (p-type) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+[SnSe2_3D]
+	/* N-type */
+	Type = Semiconductor
+	er_y = 5
+	er_x = 7
+	Electron_Affinity = 5.1
+	Bandgap = 1
+	Dimension = 3
+	Monolayer_Thickness = 0.5 /* ignore it for 3D material */
+	Nd = 0.06 /* DRC2016 0.06 */
+	Na = 0 
+	/* ignore the following for Dielectric type */
+	mc_eff = 0.3
+	mv_eff = 0.4
+	gv_of_Ec = 2
+	gv_of_Ev = 2
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+
+
+/* Added on Jan 19, 17 */
+[BP_2D]
+	/* P-type */
+	Type = Semiconductor
+	er_y = 8.3
+	er_x = 12.5
+	Electron_Affinity = 3.6
+	Bandgap = 1.3
+	Dimension = 2
+	Monolayer_Thickness = 0.1	/* ignore it for 3D material */
+	Nd = 0
+	Na = 0
+	mc_eff = 0.18
+	mv_eff = 0.15
+	gv_of_Ec = 1
+	gv_of_Ev = 2
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+
+/* Added on Mar 13, 17 */
+[BP_3D]
+	/* P-type */
+	Type = Semiconductor
+	er_y = 8.3
+	er_x = 12.5
+	Electron_Affinity = 3.6
+	Bandgap = 0.3
+	Dimension = 3
+	Monolayer_Thickness = 0.5	/* ignore it for 3D material */
+	Nd = 0
+	Na = 0
+	mc_eff = 0.18
+	mv_eff = 0.15
+	gv_of_Ec = 1
+	gv_of_Ev = 2
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+/* Added on Jul 28th, 2017 */
+[UID-GaN]
+	Type = Semiconductor
+	er_y = 8.9
+	er_x = 8.9
+	Electron_Affinity = 3.5
+	Bandgap = 3.4
+	Dimension = 3
+	Monolayer_Thickness = 0	 /* ignore it for 3D material */
+	Nd = 0
+	Na = 0 
+	/* ignore the following for Dielectric type */
+	mc_eff = 0.22
+	mv_eff = 1.0
+	gv_of_Ec = 1
+	gv_of_Ev = 2
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+[n-GaN]
+	/* N-type */
+	Type = Semiconductor
+	er_y = 8.9
+	er_x = 8.9
+	Electron_Affinity = 3.5
+	Bandgap = 3.4
+	Dimension = 3
+	Monolayer_Thickness = 0	 /* ignore it for 3D material */
+	Nd = 5e-3	/* nm^-3 */
+	Na = 0 
+	/* ignore the following for Dielectric type */
+	mc_eff = 0.22
+	mv_eff = 1.0
+	gv_of_Ec = 1
+	gv_of_Ev = 2
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
+
+[AlN]
+	Type = Dielectric
+	er_y = 8.5
+	er_x = 8.5
+	Electron_Affinity = 0.6
+	Bandgap = 6.2
+	Dimension = 3
+	Monolayer_Thickness = 0	 /* ignore it for 3D material */
+	Nd = 0
+	Na = 0 
+	/* ignore the following for Dielectric type */
+	mc_eff = 0.4
+	mv_eff = 7.26
+	gv_of_Ec = 1
+	gv_of_Ev = 2
+	Nta = 0
+	Ntd = 0
+	E_CNLn = 0	/* (Only for 2D) (electron) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	E_CNLp = 0	/* (Only for 2D) (hole) Charge-neutrality level, E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. */
+	Wta = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	Wtd = 0.026		/* (Only for 3D) width of 3D trap exponential distribution, default=0.026eV */
+	E_peakn = 0.14	/* (Only for 3D) peak position of exponential distribution, default=0.14 for electron */
+	E_peakp = 0	/* (Only for 3D) peak position of exponential distribution, default=0.0 for hole */
