@@ -118,14 +118,24 @@ void Run1D::runPoisson1D(int argc, char** argv){
 					data.bandAndCharge(p1D, dev1D);
 					if (io.calcuIV) {
 						// current
-						data.bASemiOnly();
-						double iJ = t.interTunnel2DOFP(data.cBSemi[1],
-								data.vBSemi[1], data.cBSemi[0], data.vBSemi[0],
-								data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
-						double lJ = t.likeTunnel2DOFP(data.cBSemi[1],
-								data.vBSemi[1], data.cBSemi[0], data.vBSemi[0],
-								data.fLnSemi[0] - data.fLnSemi[1], 1E-3);
-
+						int num = data.bASemiOnly();
+						int m = 0;
+						int n = 1;
+						for (int i=0; i<num; i++) {
+							if (data.fLnSemi[i] != data.fLnSemi[i+1]) {
+								m=i;
+								n=i+1;
+								break;
+							}
+						}
+						// TODO When Vds=0V, this method will become invalid, need to find a better way in the future.
+						std::cout<<"The tunnelling happens between m = "<<m<<" and n = "<<n<<endl;
+						double iJ = t.interTunnel2DOFP(data.cBSemi[n],
+								data.vBSemi[n], data.cBSemi[m], data.vBSemi[m],
+								data.fLnSemi[m] - data.fLnSemi[n], 1E-3);
+						double lJ = t.likeTunnel2DOFP(data.cBSemi[n],
+								data.vBSemi[n], data.cBSemi[m], data.vBSemi[m],
+								data.fLnSemi[m] - data.fLnSemi[n], 1E-3);
 						// Store current in InputOut
 						std::vector<double> current;
 						current.push_back(iJ);
@@ -143,7 +153,6 @@ void Run1D::runPoisson1D(int argc, char** argv){
 					tempBand.push_back(data.chargeDensity);
 					tempBand.push_back(data.mobileElectronDensity);
 					bandPerBias.push_back(tempBand);
-
 				}
 			}
 		}

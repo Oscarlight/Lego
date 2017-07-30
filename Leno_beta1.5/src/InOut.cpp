@@ -156,19 +156,19 @@ void InOut::readMaterial(std::string filename) {
 		v.push_back(ifile("Nd",0.0)); // also positive fixed charge for insulator
 		v.push_back(ifile("Na",0.0)); // also negative fixed charge for insulator
 		// Feb 6th, 2017. Uncomment Nta and Ntd lines. (By Frank)
-		v.push_back(ifile("Nta",0.0)); // also positive fixed charge for insulator
-		v.push_back(ifile("Ntd",0.0)); // also negative fixed charge for insulator
 		v.push_back(ifile("mc_eff",0.0));
 		v.push_back(ifile("mv_eff",0.0));
-		v.push_back(ifile("E_CNLn",0.0));
-		v.push_back(ifile("E_CNLp",0.0));
 		v.push_back(ifile("gv_of_Ec",0.0));
 		v.push_back(ifile("gv_of_Ev",0.0));
-		v.push_back(ifile("nwn",1.0));  // default number of nwn is 1.0.
-		v.push_back(ifile("nwp",1.0));  // default number of nwp is 1.0.
+		v.push_back(ifile("Nta",0.0)); // also positive fixed charge for insulator
+		v.push_back(ifile("Ntd",0.0)); // also negative fixed charge for insulator
+		v.push_back(ifile("E_CNLn",0.0));
+		v.push_back(ifile("E_CNLp",0.0));
+		v.push_back(ifile("Wta",0.026));  // default number of Wta is 0.026eV.
+		v.push_back(ifile("Wtd",0.026));  // default number of Wtd is 0.026eV.
 		v.push_back(ifile("E_peakn",0.14)); //default number of E_peakn is 0.14.
 		v.push_back(ifile("E_peakp",0.0)); //default number of E_peakp is 0.0.
-
+		//TODO: Pay attention to the order of these parameters
 		matMap.insert(std::pair<std::string, std::vector<double>>(layerName[i], v));
 		// Map will eliminate duplication automatically
 
@@ -196,7 +196,7 @@ void InOut::writeBAandCharge(std::string fileName, std::vector<double> vtgArray,
 	// information line
 	myfile << "Index Meaning: " << ", " << "0:x (nm)" << ", " << "1:cB (eV)" << ", " <<  "2:vB (eV)" << ", " << "3:fLn (eV)"
 			<< ", " << "4:fLp (eV)" << ", " << "5: ChargeDensiy(1/cm3)" << ", " << "6: freeCarrierDensiy(1/cm3)" << "\n";
-	myfile << "Vbg" << ", " << "Vds" << ", " << "Vtg" << ", " << "Index"  << "\n";
+	myfile << "Vtg" << ", " << "Vds" << ", " << "Vbg" << ", " << "Index"  << "\n";
 	int accu = 0;
 	int numOfIndex = bandPerBias[0].size();
 	int numOfPoint = bandPerBias[0][0].size();
