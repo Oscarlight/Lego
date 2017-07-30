@@ -66,7 +66,7 @@ double Material::electronDensity(double phin) {
 	switch (dimension) {
 	case 2:
 	{
-		if (Nta-0.0 < 1e-16) {
+		if (Nta-0.0 < 1e-14) {
 			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D;
 		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
@@ -86,7 +86,7 @@ double Material::electronDensity(double phin) {
 		//TODO: add Nta options in the input file. tried but ExtractData will not run correctly
 		// for DRC2016 Nta = 1600
 		// Feb 6th, 2017. Change 1600 to Nta. (By Frank)
-		if (Nta-0.0 < 1e-16) {
+		if (Nta-0.0 < 1e-14) {
 			electronDensity=2*gvC*pow( (mcEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phin/Vth);
 		}
 		else {
@@ -163,7 +163,7 @@ double Material::holeDensity(double phip) {
 	switch (dimension) {
 	case 2:
 	{
-		if (Ntd-0.0 < 1e-16) {
+		if (Ntd-0.0 < 1e-14) {
 			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
 		}
 		// with Trap DOS (with E_CNL at the center of Eg),  1e12 1/(cm^2 * eV) -> 1 in Leno unit
@@ -181,7 +181,7 @@ double Material::holeDensity(double phip) {
 	{
 		//TODO: add Ntd options in the input file. tried but ExtractData will not run correctly
 		// Feb 14th, 2017. Consider Ntd. (By Frank)
-		if (Ntd-0.0 < 1e-16) {
+		if (Ntd-0.0 < 1e-14) {
 		        holeDensity = 2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth);
 		}
 		else {

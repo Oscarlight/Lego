@@ -128,6 +128,7 @@ void Run1D::runPoisson1D(int argc, char** argv){
 								break;
 							}
 						}
+						// TODO When Vds=0V, this method will become invalid, need to find a better way in the future.
 						std::cout<<"The tunnelling happens between m = "<<m<<" and n = "<<n<<endl;
 						double iJ = t.interTunnel2DOFP(data.cBSemi[n],
 								data.vBSemi[n], data.cBSemi[m], data.vBSemi[m],
