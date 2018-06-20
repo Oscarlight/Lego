@@ -28,7 +28,7 @@ Material::Material(int _index, int _type, const char *pname, double _dielectricC
 	    	Nd = _Nd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
 	    	Na = _Na * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
 		// Feb 6th, 2017. Uncomment Nta and Ntd lines and comment Nta=0 and Ntd=0 lines. (By Frank)
-	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3
+	    	Nta = _Nta * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) ); // origin: 1/nm^3 * 1/eV
 	    	Ntd = _Ntd * 1 / ( cmNL(1E-7) * cmNL(1E-7) * cmNL(1E-7) );
 	        mcEff=_mcEff*m0;
 	        mvEff=_mvEff*m0;
@@ -73,8 +73,10 @@ double Material::electronDensity(double phin) {
 		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
 		else {
 		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. Change 10 to Nta.
+		// Change the calculation of trap induced fix charge density.
+			double g_A = 4;
 			electronDensity=gvC*mcEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phin/Vth)) / t2D +
-					Nta * Vth * log1p(exp((bandGap/2 - E_CNLn - phin)/Vth)) / t2D;
+					Nta * Vth * ChargeQ * log1p(1/g_A * exp((bandGap - phin)/Vth)) / t2D;
 		}
 		//std::cout<<"Nta = "<<Nta<<std::endl;
 		//std::cout<<"Nta_all = "<<Nta*Vth*log1p(exp((bandGap/2-E_CNLn-phin)/Vth))/t2D <<std::endl;
@@ -170,8 +172,10 @@ double Material::holeDensity(double phip) {
 		// Feb 14th, 2017. Change to the eq with E_CNL. (By Frank)
 		else {
 		// E_CNL here is the difference between 1/2 Eg and actuall E_CNL. If E_CNL is above 1/2 Eg, E_CNL is positive. Change 10 to Ntd.
+		// Change the calculation of trap induced fix charge density.
+			double g_D = 2;
 			holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D +
-					Ntd * Vth * log1p(exp((bandGap/2 + E_CNLp - phip)/Vth)) / t2D;
+					Ntd * Vth * ChargeQ * log1p(1/g_D * exp((bandGap - phip)/Vth)) / t2D;
 		}
 		//std::cout<<"Ntd = "<<Ntd<<std::endl;
 		//std::cout<<"Ntd_all = "<<Ntd*Vth*log1p(exp((bandGap/2+E_CNLp-phip)/Vth))/t2D << std::endl;
@@ -198,6 +202,29 @@ double Material::holeDensity(double phip) {
         		holeDensity = 2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth) + Ntd * p_trap;
 				// + Ntd*exp(-(phip-E_peakp)/(nwp*Vth))*(nwp*Vth)*ChargeQ*log1p(exp((phip-E_peakp)/(nwp*Vth)));
 		}
+	}
+	break;
+	default:
+	{
+		std::cerr << " Error: You can only choose either 2D or 3D for carrierDensity. " << std::endl;
+	}
+	break;
+	}
+	return ( holeDensity );
+}
+
+
+double Material::mobileHoleDensity(double phip) {
+	double holeDensity=0;
+	switch (dimension) {
+	case 2:
+	{
+		holeDensity = gvV*mvEff*Vth*ChargeQ/(Pi*SQUARE(Planckba))*log1p(exp(-phip/Vth)) / t2D;
+	}
+	break;
+	case 3:
+	{
+		holeDensity = 2*gvV*pow( (mvEff*Vth*ChargeQ/(2*Pi*SQUARE(Planckba))), 1.5) * fermiIntegralHalf(-phip/Vth);
 	}
 	break;
 	default:

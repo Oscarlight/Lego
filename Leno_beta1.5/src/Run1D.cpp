@@ -152,6 +152,7 @@ void Run1D::runPoisson1D(int argc, char** argv){
 					tempBand.push_back(data.fLp);
 					tempBand.push_back(data.chargeDensity);
 					tempBand.push_back(data.mobileElectronDensity);
+					tempBand.push_back(data.mobileHoleDensity);
 					bandPerBias.push_back(tempBand);
 				}
 			}

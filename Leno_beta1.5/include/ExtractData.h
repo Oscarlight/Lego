@@ -16,7 +16,7 @@ class ExtractData : public Params {
 
 public:
 	// ---- for 1D band information
-	std::vector<double> x, spacing, cB, vB, fLn, fLp, chargeDensity, mobileElectronDensity;
+	std::vector<double> x, spacing, cB, vB, fLn, fLp, chargeDensity, mobileElectronDensity, mobileHoleDensity;
 	mat phin, phip;
 	std::vector<double> xSemi, cBSemi, vBSemi, fLnSemi, fLpSemi, mcSemi, mvSemi;
 

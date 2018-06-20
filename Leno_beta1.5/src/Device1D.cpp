@@ -257,6 +257,23 @@ mat Device1D::mobileEDensityArrayFunct(mat phin) {
     return ( density );
 }
 
+mat Device1D::mobileHDensityArrayFunct(mat phip) {
+	if ( phip.n_elem != sumPoint)
+		std::cerr << "Error: input wrong phip size!" << std::endl;
+    mat density=zeros(sumPoint);
+
+    int k=0;
+    for ( int i=0; i < materialList.size(); i++) {
+	for ( int j=0; j < nyList[i]; j++) {
+	    if (typeList[i] == Semiconductor) {
+		density(k) = materialList[i].mobileHoleDensity( (double)phip(k) );
+	    } else if (typeList[i]==Dielectric) {
+	     };
+	    k++;
+	};
+    };
+    return ( density );
+}
 
 mat Device1D::eDensityArrayFunct(mat phin) {
 	if ( phin.n_elem != sumPoint)
