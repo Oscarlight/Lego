@@ -24,6 +24,7 @@ private:
 	//
 	mat cDA; // chargeDensityArray
 	mat mobileED; // mobile eletron density: In transport, sometimes either eletron or hole is involved (contact to either of them)
+	mat mobileHD; // mobile hole density
 	mat phin;
 	mat phip;
 	//
@@ -49,6 +50,7 @@ public:
 	mat getPhip();
 	mat getCDA();
 	mat getMobileED(); // - means electron here
+	mat getMobileHD(); // - means hole here
 
 	//helper
 	std::vector<double> createFLnArray(std::vector<bool> connect2Drain, double Vds,

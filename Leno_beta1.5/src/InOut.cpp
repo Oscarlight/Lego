@@ -195,7 +195,7 @@ void InOut::writeBAandCharge(std::string fileName, std::vector<double> vtgArray,
 	myfile.open((fileName+".csv").c_str());
 	// information line
 	myfile << "Index Meaning: " << ", " << "0:x (nm)" << ", " << "1:cB (eV)" << ", " <<  "2:vB (eV)" << ", " << "3:fLn (eV)"
-			<< ", " << "4:fLp (eV)" << ", " << "5: ChargeDensiy(1/cm3)" << ", " << "6: freeCarrierDensiy(1/cm3)" << "\n";
+			<< ", " << "4:fLp (eV)" << ", " << "5: ChargeDensiy(1/cm3)" << ", " << "6: freeElectronDensiy(1/cm3)" << ", " << "7: freeHoleDensity(1/cm3)" << "\n";
 	myfile << "Vtg" << ", " << "Vds" << ", " << "Vbg" << ", " << "Index"  << "\n";
 	int accu = 0;
 	int numOfIndex = bandPerBias[0].size();

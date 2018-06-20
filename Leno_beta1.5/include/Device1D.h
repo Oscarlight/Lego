@@ -62,6 +62,7 @@ public:
 
 	// related function
 	mat mobileEDensityArrayFunct(mat phin); // TODO: eletron density include (in Material) the traps, which are not mobile
+	mat mobileHDensityArrayFunct(mat phip);
 	mat eDensityArrayFunct(mat phin); // mat == Map<double>
 	mat hDensityArrayFunct(mat phip);
 	mat chargeDensityArrayFunct(mat phin, mat phip, bool Equilibrum);

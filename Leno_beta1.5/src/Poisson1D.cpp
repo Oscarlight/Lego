@@ -111,6 +111,10 @@ mat Poisson1D::getMobileED() {
 	return (mobileED);
 }
 
+mat Poisson1D::getMobileHD() {
+	return (mobileHD);
+}
+
 mat Poisson1D::setPhip(mat phin, bool Equilibrum) {
 	if (Equilibrum == true)
 		return (dev1D.getBGArray() - phin);
@@ -167,7 +171,8 @@ void Poisson1D::runPoisson1D(double vTolerance, double _chargeTolerance, double 
     phip = setPhip(phin, Equilibrum);
     condBand = potential - dev1D.getEAArray();
     valeBand = condBand - dev1D.getBGArray();
-    mobileED =  - dev1D.mobileEDensityArrayFunct(phin); // positive means hole
+    mobileED = - dev1D.mobileEDensityArrayFunct(phin);
+    mobileHD = dev1D.mobileHDensityArrayFunct(phip);
 }
 
 std::vector<double> Poisson1D::rangeByNum(double begin, double end, double number) {

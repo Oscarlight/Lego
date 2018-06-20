@@ -58,6 +58,7 @@ public:
 	double electronDensity(double phin);
 	double mobileElectronDensity(double phin);
 	double holeDensity(double phip);
+	double mobileHoleDensity(double phip);
     double chargeDensity(double phin, double phip);
     double fixChargeDensity(); // for insulator
     double quantumCapa(double phin, double phip);

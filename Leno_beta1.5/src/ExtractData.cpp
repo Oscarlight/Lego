@@ -70,6 +70,7 @@ bool ExtractData::bandAndCharge(Poisson1D p1D, Device1D dev1D) {
 	phip = p1D.getPhip();
 	chargeDensity = mat2Vec(p1D.getCDA() / ( cmLN(1) * cmLN(1) * cmLN(1) ) );
 	mobileElectronDensity = mat2Vec(p1D.getMobileED() / ( cmLN(1) * cmLN(1) * cmLN(1) ) );
+	mobileHoleDensity = mat2Vec(p1D.getMobileHD() / ( cmLN(1) * cmLN(1) * cmLN(1) ) );
 	spacing = dev1D.getSpacingY();
 	double sum = 0;
 	for (int i = 0; i < cB.size(); i++) {
